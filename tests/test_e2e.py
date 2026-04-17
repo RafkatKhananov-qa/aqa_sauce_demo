@@ -1,10 +1,10 @@
 from config.users import USER1_NAME, USER1_PASSWORD
+from pages.login_page import LoginPage
 from pages.cart_page import CartPage
 from pages.checkout_complete_page import CheckoutCompletePage
 from pages.checkout_step_one_page import CheckoutStepOnePage
 from pages.checkout_step_two_page import CheckoutStepTwoPage
 from pages.inventory_page import InventoryPage
-from pages.login_page import LoginPage
 from utils.artifacts import save_screenshot, write_log, save_report
 
 
