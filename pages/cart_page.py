@@ -34,5 +34,3 @@ class CartPage(BasePage):
 
     def verify_checkout_step_one(self):
         expect(self.page).to_have_url(re.compile(r".*/checkout-step-one.html"))
-
-
