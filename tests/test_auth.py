@@ -7,45 +7,21 @@ from pages.login_page import LoginPage
 
 
 @pytest.mark.parametrize("username, password", [
-    (USER1_NAME, USER_PASSWORD)
-])
-def test_auth_001(page, username, password):
-    login_page = LoginPage(page)
-
-    login_page.open()
-
-    login_page.verify_page_loaded()
-
-    login_page.enter_username(username)
-    login_page.verify_username(username)
-
-    login_page.enter_password(password)
-    login_page.verify_password(password)
-
-    login_page.click_login()
-    login_page.verify_login_success()
-
-
-@pytest.mark.parametrize("username, password", [
+    (USER1_NAME, USER_PASSWORD),
     (USER2_NAME, USER_PASSWORD),
     (USER3_NAME, USER_PASSWORD),
     (USER4_NAME, USER_PASSWORD),
     (USER5_NAME, USER_PASSWORD)
 ])
-def test_auth_002(page, username, password):
+def test_auth_001_002(page, username, password):
     login_page = LoginPage(page)
 
     login_page.open()
 
     login_page.verify_page_loaded()
 
-    login_page.enter_username(username)
-    login_page.verify_username(username)
+    login_page.authorize(username, password)
 
-    login_page.enter_password(password)
-    login_page.verify_password(password)
-
-    login_page.click_login()
     login_page.verify_login_success()
 
 
@@ -64,13 +40,8 @@ def test_auth_003_004_005_006_007_008(page, username, password, error_message):
 
     login_page.verify_page_loaded()
 
-    login_page.enter_username(username)
-    login_page.verify_username(username)
+    login_page.authorize(username, password)
 
-    login_page.enter_password(password)
-    login_page.verify_password(password)
-
-    login_page.click_login()
     login_page.verify_error_message(error_message)
 
 
@@ -86,22 +57,11 @@ def test_auth_009(page, username, password, error_message):
 
     for _ in range(5):
 
-        login_page.enter_username(username)
-        login_page.verify_username(username)
-
-        login_page.enter_password(password)
-        login_page.verify_password(password)
-
-        login_page.click_login()
+        login_page.authorize(username, password)
         login_page.verify_error_message(error_message)
 
-    login_page.enter_username(USER1_NAME)
-    login_page.verify_username(USER1_NAME)
+    login_page.authorize(USER1_NAME, USER_PASSWORD)
 
-    login_page.enter_password(USER_PASSWORD)
-    login_page.verify_password(USER_PASSWORD)
-
-    login_page.click_login()
     login_page.verify_login_success()
 
 
@@ -115,13 +75,8 @@ def test_auth_010(page, username, password):
 
     login_page.verify_page_loaded()
 
-    login_page.enter_username(username)
-    login_page.verify_username(username)
+    login_page.authorize(username, password)
 
-    login_page.enter_password(password)
-    login_page.verify_password(password)
-
-    login_page.click_login()
     login_page.verify_login_success()
 
     page.reload()

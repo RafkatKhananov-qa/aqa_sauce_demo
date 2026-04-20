@@ -1,6 +1,5 @@
 import re
 from pages.base_page import BasePage
-from config.base import BASE_URL
 from playwright.sync_api import expect
 
 
@@ -11,9 +10,6 @@ class LoginPage(BasePage):
         self.password_input = page.locator("#password")
         self.login_button = page.locator("#login-button")
         self.error_message = page.locator("[data-test='error']")
-
-    def open(self):
-        super().open(BASE_URL)
 
     def verify_page_loaded(self):
         expect(self.page).to_have_url("https://www.saucedemo.com/")
@@ -39,3 +35,10 @@ class LoginPage(BasePage):
     def verify_error_message(self, expected_text):
         expect(self.error_message).to_be_visible()
         expect(self.error_message).to_have_text(expected_text)
+
+    def authorize(self, username, password):
+        self.enter_username(username)
+        self.verify_username(username)
+        self.enter_password(password)
+        self.verify_password(password)
+        self.click_login()
