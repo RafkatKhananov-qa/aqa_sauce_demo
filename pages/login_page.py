@@ -10,6 +10,7 @@ class LoginPage(BasePage):
         self.username_input = page.locator("#user-name")
         self.password_input = page.locator("#password")
         self.login_button = page.locator("#login-button")
+        self.error_message = page.locator("[data-test='error']")
 
     def open(self):
         super().open(BASE_URL)
@@ -34,3 +35,7 @@ class LoginPage(BasePage):
 
     def verify_login_success(self):
         expect(self.page).to_have_url(re.compile(r".*/inventory.html"))
+
+    def verify_error_message(self, expected_text):
+        expect(self.error_message).to_be_visible()
+        expect(self.error_message).to_have_text(expected_text)
