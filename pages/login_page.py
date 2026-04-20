@@ -15,7 +15,7 @@ class LoginPage(BasePage):
         super().open(BASE_URL)
 
     def verify_page_loaded(self):
-        expect(self.page).to_have_url("https://www.saucedemo.com/")
+        expect(self.page).to_have_url(BASE_URL)
 
     def enter_username(self, username):
         self.username_input.fill(username)
