@@ -9,3 +9,4 @@ output/
 .Python
 .env
 venv/
+.pytest_cache/
