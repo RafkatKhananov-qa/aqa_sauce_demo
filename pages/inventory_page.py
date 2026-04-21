@@ -1,8 +1,8 @@
 import re
 from playwright.sync_api import expect
-
 from config.goods import ITEM_NAME
 from pages.base_page import BasePage
+from utils.helpers import verify_price_format
 
 
 class InventoryPage(BasePage):
@@ -51,9 +51,6 @@ class InventoryPage(BasePage):
         item = self.page.locator(f".inventory_item:has-text('{item_name}')")
         price = item.locator(".inventory_item_price").text_content().strip()
         return price
-
-    def verify_price_format(self, price: str):
-        assert price.startswith("$"), f"Цена не в формате $, получено: {price}"
 
     def click_add_to_cart_button(self):
         self.add_to_cart_button.click()

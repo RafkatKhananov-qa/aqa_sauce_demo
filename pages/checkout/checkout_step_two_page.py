@@ -1,6 +1,7 @@
 import re
 from playwright.sync_api import expect
 from pages.base_page import BasePage
+from utils.helpers import price_to_float, extract_price
 
 
 class CheckoutStepTwoPage(BasePage):
@@ -37,10 +38,7 @@ class CheckoutStepTwoPage(BasePage):
         expect(self.shipping_information).to_contain_text(shipping_information_text)
 
     def get_item_total_price(self):
-        price_text = self.inventory_item_total_price.text_content().strip()
-        price = price_text.split("$")[1]
-        price = "$" + price
-        return price
+        return extract_price(self.inventory_item_total_price.text_content())
 
     def verify_item_total_price(self, expected_price: str):
         actual_price = self.get_item_total_price()
@@ -56,18 +54,12 @@ class CheckoutStepTwoPage(BasePage):
             f"Ожидалось {expected_price}, получено {actual_price}"
 
     def get_total_price(self):
-        price_text = self.total_price.text_content().strip()
-        price = price_text.split("$")[1]
-        price = "$" + price
-        return price
-
-    def _price_to_float(self, price: str) -> float:
-        return float(price.split("$")[1])
+        return extract_price(self.total_price.text_content())
 
     def verify_total_price(self):
-        item_price = self._price_to_float(self.get_item_total_price())
-        tax_price = self._price_to_float(self.get_item_tax_price())
-        total_price = self._price_to_float(self.get_total_price())
+        item_price = price_to_float(self.get_item_total_price())
+        tax_price = price_to_float(self.get_item_tax_price())
+        total_price = price_to_float(self.get_total_price())
 
         expected_total = round(item_price + tax_price, 2)
 
