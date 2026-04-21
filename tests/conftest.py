@@ -17,11 +17,7 @@ def page():
 def logged_in_page(page):
     login_page = LoginPage(page)
     login_page.open()
-    login_page.verify_page_loaded()
-    login_page.enter_username(USER1_NAME)
-    login_page.verify_username(USER1_NAME)
-    login_page.enter_password(USER1_PASSWORD)
-    login_page.verify_password(USER1_PASSWORD)
+    login_page.fill_username(USER1_NAME)
+    login_page.fill_password(USER1_PASSWORD)
     login_page.click_login()
-    login_page.verify_login_success()
     yield page

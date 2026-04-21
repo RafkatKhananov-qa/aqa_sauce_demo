@@ -31,12 +31,12 @@ class TestCheckout:
         logger.info("Страница логина успешно загружена")
         results["steps"].append("Страница логина успешно загружена")
 
-        login_page.enter_username(USER1_NAME)
+        login_page.fill_username(USER1_NAME)
         login_page.verify_username(USER1_NAME)
         logger.info(f"Ввели логин: {USER1_NAME}")
         results["steps"].append(f"Ввели логин: {USER1_NAME}")
 
-        login_page.enter_password(USER1_PASSWORD)
+        login_page.fill_password(USER1_PASSWORD)
         login_page.verify_password(USER1_PASSWORD)
         logger.info("Ввели пароль")
         results["steps"].append("Ввели пароль")

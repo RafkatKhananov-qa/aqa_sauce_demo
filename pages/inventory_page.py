@@ -1,8 +1,17 @@
 import re
+from enum import Enum
 from playwright.sync_api import expect
+
 from config.goods import ITEM_NAME
 from pages.base_page import BasePage
 from utils.helpers import verify_price_format
+
+
+class SortOption(Enum):
+    PRICE_ASC = 'lohi'
+    PRICE_DESC = 'hilo'
+    NAME_ASC = 'az'
+    NAME_DESC = 'za'
 
 
 class InventoryPage(BasePage):
@@ -15,6 +24,7 @@ class InventoryPage(BasePage):
         self.cart_badge = page.locator(".shopping_cart_badge")
         self.shopping_cart_icon = page.locator(".shopping_cart_link")
         self.inventory_item_image = page.locator("//div[@class='inventory_item'][1]//img[@class='inventory_item_img']")
+        self.sort_container = page.locator(".product_sort_container")
 
     def get_inventory_item_count(self):
         return self.page.locator(".inventory_item").count()
@@ -76,14 +86,8 @@ class InventoryPage(BasePage):
     def click_inventory_item_image(self):
         self.inventory_item_image.click()
 
-    def sort_by_ascending_price(self):
-        self.page.locator(".product_sort_container").select_option(value='lohi')
-
-    def sort_by_descending_price(self):
-        self.page.locator(".product_sort_container").select_option(value='hilo')
-
-    def sort_by_ascending_name(self):
-        self.page.locator(".product_sort_container").select_option(value='az')
+    def sort_by(self, option: SortOption):
+        self.sort_container.select_option(value=option.value)
 
     def verify_cart_page_opened(self):
         expect(self.page).to_have_url(re.compile(r".*/cart.html"))
