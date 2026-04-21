@@ -17,11 +17,8 @@ def test_auth_001_002(page, username, password):
     login_page = LoginPage(page)
 
     login_page.open()
-
     login_page.verify_page_loaded()
-
     login_page.authorize(username, password)
-
     login_page.verify_login_success()
 
 
@@ -37,11 +34,8 @@ def test_auth_003_004_005_006_007_008(page, username, password, error_message):
     login_page = LoginPage(page)
 
     login_page.open()
-
     login_page.verify_page_loaded()
-
     login_page.authorize(username, password)
-
     login_page.verify_error_message(error_message)
 
 
@@ -52,16 +46,13 @@ def test_auth_009(page, username, password, error_message):
     login_page = LoginPage(page)
 
     login_page.open()
-
     login_page.verify_page_loaded()
 
     for _ in range(5):
-
         login_page.authorize(username, password)
         login_page.verify_error_message(error_message)
 
     login_page.authorize(USER1_NAME, USER_PASSWORD)
-
     login_page.verify_login_success()
 
 
@@ -72,11 +63,8 @@ def test_auth_010(page, username, password):
     login_page = LoginPage(page)
 
     login_page.open()
-
     login_page.verify_page_loaded()
-
     login_page.authorize(username, password)
-
     login_page.verify_login_success()
 
     page.reload()
