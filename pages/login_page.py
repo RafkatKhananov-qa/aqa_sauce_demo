@@ -34,3 +34,10 @@ class LoginPage(BasePage):
 
     def verify_login_success(self):
         expect(self.page).to_have_url(re.compile(r".*/inventory.html"))
+
+    def authorize(self, username, password):
+        self.fill_username(username)
+        self.verify_username(password)
+        self.fill_password(username)
+        self.verify_password(password)
+        self.click_login()

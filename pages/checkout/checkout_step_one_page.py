@@ -10,6 +10,8 @@ class CheckoutStepOnePage(BasePage):
         self.last_name = page.locator("#last-name")
         self.postal_code = page.locator("#postal-code")
         self.continue_button = page.locator("#continue")
+        self.cancel_button = page.locator("#cancel")
+        self.error = page.locator("[data-test='error']")
 
     def enter_first_name(self, first_name):
         self.first_name.fill(first_name)
@@ -32,5 +34,14 @@ class CheckoutStepOnePage(BasePage):
     def click_continue_button(self):
         self.continue_button.click()
 
+    def click_cancel_button(self):
+        self.cancel_button.click()
+
     def verify_checkout_step_two(self):
         expect(self.page).to_have_url(re.compile(r".*/checkout-step-two.html"))
+
+    def verify_cart_page(self):
+        expect(self.page).to_have_url(re.compile(r".*/cart.html"))
+
+    def verify_text_in_field_is_required_error(self, text: str):
+        expect(self.error).to_have_text(text)

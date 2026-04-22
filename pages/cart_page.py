@@ -11,6 +11,7 @@ class CartPage(BasePage):
         self.inventory_item_name = page.locator(".inventory_item_name")
         self.inventory_item_price = page.locator(".inventory_item_price")
         self.checkout_button = page.locator("#checkout")
+        self.continue_shopping_button = page.locator("#continue-shopping")
 
     def verify_cart_items_count(self, num):
         expect(self.cart_item).to_have_count(num)
@@ -32,5 +33,11 @@ class CartPage(BasePage):
     def click_checkout_button(self):
         self.checkout_button.click()
 
+    def click_continue_shopping_button(self):
+        self.continue_shopping_button.click()
+
     def verify_checkout_step_one(self):
         expect(self.page).to_have_url(re.compile(r".*/checkout-step-one.html"))
+
+    def verify_inventory(self):
+        expect(self.page).to_have_url(re.compile(r".*/inventory.html"))

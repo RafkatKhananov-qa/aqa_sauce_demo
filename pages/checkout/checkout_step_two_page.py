@@ -27,9 +27,7 @@ class CheckoutStepTwoPage(BasePage):
         return self.inventory_item_price.text_content().strip()
 
     def verify_price(self, expected_price: str):
-        actual_price = self.get_cart_price()
-        assert actual_price == expected_price, \
-            f"Ожидалось {expected_price}, получено {actual_price}"
+        expect(self.inventory_item_price.first).to_have_text(expected_price)
 
     def verify_payment_information(self, payment_information_text):
         expect(self.payment_information).to_contain_text(payment_information_text)
@@ -41,17 +39,13 @@ class CheckoutStepTwoPage(BasePage):
         return extract_price(self.inventory_item_total_price.text_content())
 
     def verify_item_total_price(self, expected_price: str):
-        actual_price = self.get_item_total_price()
-        assert actual_price == expected_price, \
-            f"Ожидалось {expected_price}, получено {actual_price}"
+        expect(self.inventory_item_total_price).to_contain_text(expected_price)
 
     def get_item_tax_price(self):
         return self.tax_price.text_content().strip()
 
     def verify_item_tax_price(self, expected_price: str):
-        actual_price = self.get_item_tax_price()
-        assert actual_price == expected_price, \
-            f"Ожидалось {expected_price}, получено {actual_price}"
+        expect(self.tax_price).to_have_text(expected_price)
 
     def get_total_price(self):
         return extract_price(self.total_price.text_content())
