@@ -11,11 +11,13 @@ class CartPage(BasePage):
         self.inventory_item_name = page.locator(".inventory_item_name")
         self.inventory_item_price = page.locator(".inventory_item_price")
         self.checkout_button = page.locator("#checkout")
+        self.remove_button = page.locator("//button[text()='Remove']")
+        self.continue_shopping_button = page.locator("#continue-shopping")
 
     def verify_cart_items_count(self, num):
         expect(self.cart_item).to_have_count(num)
 
-    def verify_cart_quantity(self, num):
+    def verify_cart_quantity(self, num: str):
         expect(self.cart_quantity).to_have_text(num)
 
     def verify_inventory_item_name(self, name):
@@ -25,12 +27,19 @@ class CartPage(BasePage):
         return self.inventory_item_price.text_content().strip()
 
     def verify_price(self, expected_price: str):
-        actual_price = self.get_cart_price()
-        assert actual_price == expected_price, \
-            f"Ожидалось {expected_price}, получено {actual_price}"
+        expect(self.inventory_item_price.first).to_have_text(expected_price)
 
     def click_checkout_button(self):
         self.checkout_button.click()
 
     def verify_checkout_step_one(self):
         expect(self.page).to_have_url(re.compile(r".*/checkout-step-one.html"))
+
+    def verify_inventory(self):
+        expect(self.page).to_have_url(re.compile(r".*/inventory.html"))
+
+    def click_remove_button(self):
+        self.remove_button.click()
+
+    def click_continue_shopping_button(self):
+        self.continue_shopping_button.click()

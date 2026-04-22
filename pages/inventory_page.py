@@ -19,12 +19,12 @@ class InventoryPage(BasePage):
         super().__init__(page)
         self.inventory_item = page.get_by_text(ITEM_NAME)
         self.add_to_cart_button = page.locator("#add-to-cart-sauce-labs-backpack")
+        self.add_to_cart_buttons = page.locator("//button[text()='Add to cart']")
         self.add_to_cart_button_details = page.locator("#add-to-cart")
         self.remove_button_details = page.locator("#remove")
-        self.cart_badge = page.locator(".shopping_cart_badge")
-        self.shopping_cart_icon = page.locator(".shopping_cart_link")
         self.inventory_item_image = page.locator("//div[@class='inventory_item'][1]//img[@class='inventory_item_img']")
         self.sort_container = page.locator(".product_sort_container")
+        self.remove_button = page.locator("//button[text()='Remove']")
 
     def get_inventory_item_count(self):
         return self.page.locator(".inventory_item").count()
@@ -74,15 +74,6 @@ class InventoryPage(BasePage):
     def click_remove_button_details(self):
         self.remove_button_details.click()
 
-    def verify_items_count_in_bucket(self, num: str):
-        expect(self.cart_badge).to_have_text(num)
-
-    def verify_bucket_is_empty(self):
-        expect(self.page.locator(".shopping_cart_badge")).to_have_count(0)
-
-    def click_shopping_cart_icon(self):
-        self.shopping_cart_icon.click()
-
     def click_inventory_item_image(self):
         self.inventory_item_image.click()
 
@@ -94,3 +85,16 @@ class InventoryPage(BasePage):
 
     def verify_inventory_item_page_opened(self):
         expect(self.page).to_have_url(re.compile(r".*/inventory-item.html"))
+
+    def click_add_to_cart_button_count_times(self, count):
+        for _ in range(count):
+            self.add_to_cart_button.click()
+            self.remove_button.click()
+        self.add_to_cart_button.click()
+
+    def click_add_to_cart_buttons_by_indexes(self, indexes: list[int]):
+        for i in indexes:
+            self.add_to_cart_buttons.nth(i).click()
+
+    def click_inventory_item(self):
+        self.inventory_item.click()
