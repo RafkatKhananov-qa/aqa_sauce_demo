@@ -13,6 +13,11 @@ class CheckoutStepOnePage(BasePage):
         self.cancel_button = page.locator("#cancel")
         self.error = page.locator("[data-test='error']")
 
+    def fill_form(self, first_name, last_name, postal_code):
+        self.first_name.fill(first_name)
+        self.last_name.fill(last_name)
+        self.postal_code.fill(postal_code)
+
     def enter_first_name(self, first_name):
         self.first_name.fill(first_name)
 
