@@ -16,13 +16,13 @@ class LoginPage(BasePage):
     def verify_page_loaded(self):
         expect(self.page).to_have_url(BASE_URL)
 
-    def enter_username(self, username):
+    def fill_username(self, username):
         self.username_input.fill(username)
 
     def verify_username(self, username):
         expect(self.username_input).to_have_value(username)
 
-    def enter_password(self, password):
+    def fill_password(self, password):
         self.password_input.fill(password)
 
     def verify_password(self, password):
