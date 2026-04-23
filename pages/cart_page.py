@@ -1,9 +1,27 @@
 import re
 from playwright.sync_api import expect
 from pages.base_page import BasePage
+from pages.inventory_page import InventoryPage
 
 
 class CartPage(BasePage):
+
+    @classmethod
+    def add_item_and_open_cart(cls, page):
+        inventory_page = InventoryPage(page)
+        inventory_page.click_add_to_cart_button()
+        inventory_page.click_shopping_cart_icon()
+        return cls(page)
+
+    @classmethod
+    def add_item_via_detail_and_open_cart(cls, page):
+        inventory_page = InventoryPage(page)
+        inventory_page.click_add_to_cart_button()
+        inventory_page.click_inventory_item()
+        inventory_page.click_shopping_cart_icon()
+        inventory_page.verify_cart_page_opened()
+        return cls(page)
+
     def __init__(self, page):
         super().__init__(page)
         self.cart_item = page.locator(".cart_item")
@@ -43,3 +61,9 @@ class CartPage(BasePage):
 
     def click_continue_shopping_button(self):
         self.continue_shopping_button.click()
+
+    def verify_cart_item(self, item_name: str, quantity: str, price: str):
+        self.verify_cart_quantity(quantity)
+        self.verify_price(price)
+        self.verify_cart_items_count(1)
+        self.verify_inventory_item_name(item_name)

@@ -41,3 +41,9 @@ class LoginPage(BasePage):
         self.fill_password(password)
         self.verify_password(password)
         self.click_login()
+
+    def login_as(self, username: str, password: str):
+        self.open()
+        self.verify_page_loaded()
+        self.authorize(username, password)
+        self.verify_login_success()
