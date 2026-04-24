@@ -50,6 +50,9 @@ class CartPage(BasePage):
     def click_checkout_button(self):
         self.checkout_button.click()
 
+    def click_continue_shopping_button(self):
+        self.continue_shopping_button.click()
+
     def verify_checkout_step_one(self):
         expect(self.page).to_have_url(re.compile(r".*/checkout-step-one.html"))
 
@@ -58,9 +61,6 @@ class CartPage(BasePage):
 
     def click_remove_button(self):
         self.remove_button.click()
-
-    def click_continue_shopping_button(self):
-        self.continue_shopping_button.click()
 
     def verify_cart_item(self, item_name: str, quantity: str, price: str):
         self.verify_cart_quantity(quantity)

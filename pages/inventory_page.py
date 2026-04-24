@@ -1,10 +1,8 @@
 import re
 from enum import Enum
 from playwright.sync_api import expect
-
 from config.goods import ITEM_NAME
 from pages.base_page import BasePage
-from utils.helpers import verify_price_format
 
 
 class SortOption(Enum):

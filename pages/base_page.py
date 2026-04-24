@@ -1,4 +1,5 @@
 from playwright.sync_api import expect
+from config.base import BASE_URL
 
 
 class BasePage:
@@ -9,7 +10,7 @@ class BasePage:
         self.burger_menu_btn = page.locator("#react-burger-menu-btn")
         self.logout_button = page.locator("[data-test='logout-sidebar-link']")
 
-    def open(self, url):
+    def open(self, url=BASE_URL):
         self.page.goto(url)
 
     def click_shopping_cart_icon(self):
