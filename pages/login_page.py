@@ -1,5 +1,5 @@
 import re
-
+import time
 from config.base import BASE_URL
 from pages.base_page import BasePage
 from playwright.sync_api import expect
@@ -33,7 +33,26 @@ class LoginPage(BasePage):
 
     def verify_login_success(self):
         expect(self.page).to_have_url(re.compile(r".*/inventory.html"))
+
+    def authorize(self, username, password):
+        self.fill_username(username)
+        self.verify_username(username)
+        self.fill_password(password)
+        self.verify_password(password)
+        self.click_login()
+
+    def login_and_verify(self, username: str, password: str):
+        self.open()
+        self.verify_page_loaded()
+        self.authorize(username, password)
+        self.verify_login_success()
         
+    def get_login_button_response_time_ms(self):
+        start = time.time()
+        self.login_button.click()
+        self.page.wait_for_load_state("load")
+        return (time.time() - start) * 1000
+
     def verify_error_message(self, expected_text):
         expect(self.error_message).to_be_visible()
         expect(self.error_message).to_have_text(expected_text)

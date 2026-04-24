@@ -1,5 +1,5 @@
 from config.base import INVENTORY_ITEM_NAME
-from config.users import USER1_NAME, USER1_PASSWORD
+from config.users import USER1_NAME, USER_PASSWORD
 from pages.login_page import LoginPage
 from pages.cart_page import CartPage
 from pages.checkout.checkout_complete_page import CheckoutCompletePage
@@ -36,8 +36,8 @@ class TestCheckout:
         logger.info(f"Ввели логин: {USER1_NAME}")
         results["steps"].append(f"Ввели логин: {USER1_NAME}")
 
-        login_page.fill_password(USER1_PASSWORD)
-        login_page.verify_password(USER1_PASSWORD)
+        login_page.fill_password(USER_PASSWORD)
+        login_page.verify_password(USER_PASSWORD)
         logger.info("Ввели пароль")
         results["steps"].append("Ввели пароль")
 
