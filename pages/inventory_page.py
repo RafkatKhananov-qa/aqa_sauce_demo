@@ -96,10 +96,7 @@ class InventoryPage(BasePage):
             self.add_to_cart_buttons.nth(i).click()
 
     def verify_add_to_cart_buttons_are_clickable(self):
-        for i in range(self.add_to_cart_buttons.count()):
-            expect(self.add_to_cart_buttons.nth(i)).to_be_visible()
-            expect(self.add_to_cart_buttons.nth(i)).to_be_enabled()
-            self.add_to_cart_buttons.nth(i).click(trial=True)
+        self.verify_all_clickable(self.add_to_cart_buttons)
 
     def click_inventory_item(self):
         self.inventory_item.click()

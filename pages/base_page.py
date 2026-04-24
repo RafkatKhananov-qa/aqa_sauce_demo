@@ -31,11 +31,17 @@ class BasePage:
     def click_logout_button(self):
         self.logout_button.click()
 
+    def click_visible_button(self, locator):
+        expect(locator).to_be_visible()
+        expect(locator).to_be_enabled()
+        locator.click(trial=True)
+
+    def verify_all_clickable(self, locator):
+        for i in range(locator.count()):
+            self.click_visible_button(locator.nth(i))
+
     def verify_sidebar_links_are_clickable(self):
-        for i in range(self.sidebar_links.count()):
-            expect(self.sidebar_links.nth(i)).to_be_visible()
-            expect(self.sidebar_links.nth(i)).to_be_enabled()
-            self.sidebar_links.nth(i).click(trial=True)
+        self.verify_all_clickable(self.sidebar_links)
 
     def click_close_sidebar_button(self):
         self.close_sidebar_button.click()
