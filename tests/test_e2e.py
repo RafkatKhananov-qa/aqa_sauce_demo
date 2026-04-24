@@ -1,5 +1,5 @@
 from config.base import INVENTORY_ITEM_NAME
-from config.users import USER1_NAME, USER1_PASSWORD
+from config.users import USER1_NAME, USER_PASSWORD
 from pages.login_page import LoginPage
 from pages.cart_page import CartPage
 from pages.checkout.checkout_complete_page import CheckoutCompletePage
@@ -36,8 +36,8 @@ class TestCheckout:
         logger.info(f"Ввели логин: {USER1_NAME}")
         results["steps"].append(f"Ввели логин: {USER1_NAME}")
 
-        login_page.fill_password(USER1_PASSWORD)
-        login_page.verify_password(USER1_PASSWORD)
+        login_page.fill_password(USER_PASSWORD)
+        login_page.verify_password(USER_PASSWORD)
         logger.info("Ввели пароль")
         results["steps"].append("Ввели пароль")
 
@@ -99,7 +99,7 @@ class TestCheckout:
         checkout_step_two_page = CheckoutStepTwoPage(page)
         checkout_step_two_page.verify_cart_items_count(1)
         checkout_step_two_page.verify_inventory_item_name("Backpack")
-        checkout_step_two_page.verify_price(price)
+        checkout_step_two_page.verify_first_item_price(price)
         checkout_step_two_page.verify_payment_information("SauceCard #31337")
         checkout_step_two_page.verify_shipping_information("Pony Express")
         checkout_step_two_page.verify_item_total_price(price)
