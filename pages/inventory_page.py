@@ -22,6 +22,7 @@ class InventoryPage(BasePage):
         self.remove_button_details = page.locator("#remove")
         self.inventory_item_image = page.locator("//div[@class='inventory_item'][1]"
                                                  "//img[@class='inventory_item_img']")
+        self.inventory_item_image = page.locator("//div[@class='inventory_item'][1]//img[@class='inventory_item_img']")
         self.sort_container = page.locator(".product_sort_container")
         self.remove_button = page.locator("//button[text()='Remove']")
 

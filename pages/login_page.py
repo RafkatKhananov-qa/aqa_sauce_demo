@@ -41,6 +41,12 @@ class LoginPage(BasePage):
         self.verify_password(password)
         self.click_login()
 
+    def login_and_verify(self, username: str, password: str):
+        self.open()
+        self.verify_page_loaded()
+        self.authorize(username, password)
+        self.verify_login_success()
+
     def verify_error_message(self, expected_text):
         expect(self.error_message).to_be_visible()
         expect(self.error_message).to_have_text(expected_text)
