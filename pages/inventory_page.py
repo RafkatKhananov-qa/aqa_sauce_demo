@@ -20,6 +20,8 @@ class InventoryPage(BasePage):
         self.add_to_cart_buttons = page.locator("//button[text()='Add to cart']")
         self.add_to_cart_button_details = page.locator("#add-to-cart")
         self.remove_button_details = page.locator("#remove")
+        self.inventory_item_image = page.locator("//div[@class='inventory_item'][1]"
+                                                 "//img[@class='inventory_item_img']")
         self.inventory_item_image = page.locator("//div[@class='inventory_item'][1]//img[@class='inventory_item_img']")
         self.sort_container = page.locator(".product_sort_container")
         self.remove_button = page.locator("//button[text()='Remove']")
@@ -93,6 +95,9 @@ class InventoryPage(BasePage):
     def click_add_to_cart_buttons_by_indexes(self, indexes: list[int]):
         for i in indexes:
             self.add_to_cart_buttons.nth(i).click()
+
+    def verify_add_to_cart_buttons_are_clickable(self):
+        self.verify_all_clickable(self.add_to_cart_buttons)
 
     def click_inventory_item(self):
         self.inventory_item.click()
