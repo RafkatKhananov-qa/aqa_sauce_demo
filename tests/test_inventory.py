@@ -6,7 +6,6 @@ from config.goods import (GOODS_EXPECTED_NAMES, GOODS_EXPECTED_PRICES,
 
 def test_inv_001(logged_in_page):
     inventory_page = InventoryPage(logged_in_page)
-    inventory_page.get_inventory_item_count()
     inventory_page.verify_inventory_items_count(6)
 
 

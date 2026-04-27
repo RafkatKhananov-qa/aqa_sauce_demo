@@ -26,7 +26,7 @@ class CheckoutStepTwoPage(BasePage):
     def get_cart_price(self):
         return self.inventory_item_price.text_content().strip()
 
-    def verify_price(self, expected_price: str):
+    def verify_first_item_price(self, expected_price: str):
         expect(self.inventory_item_price.first).to_have_text(expected_price)
 
     def verify_payment_information(self, payment_information_text):

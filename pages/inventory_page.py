@@ -20,10 +20,7 @@ class InventoryPage(BasePage):
         self.add_to_cart_buttons = page.locator("//button[text()='Add to cart']")
         self.add_to_cart_button_details = page.locator("#add-to-cart")
         self.remove_button_details = page.locator("#remove")
-        self.cart_badge = page.locator(".shopping_cart_badge")
-        self.shopping_cart_icon = page.locator(".shopping_cart_link")
-        self.inventory_item_image = page.locator("//div[@class='inventory_item'][1]"
-                                                 "//img[@class='inventory_item_img']")
+        self.inventory_item_image = page.locator("//div[@class='inventory_item'][1]//img[@class='inventory_item_img']")
         self.sort_container = page.locator(".product_sort_container")
         self.remove_button = page.locator("//button[text()='Remove']")
 
@@ -74,15 +71,6 @@ class InventoryPage(BasePage):
 
     def click_remove_button_details(self):
         self.remove_button_details.click()
-
-    def verify_items_count_in_bucket(self, num: str):
-        expect(self.cart_badge).to_have_text(num)
-
-    def verify_bucket_is_empty(self):
-        expect(self.page.locator(".shopping_cart_badge")).to_have_count(0)
-
-    def click_shopping_cart_icon(self):
-        self.shopping_cart_icon.click()
 
     def click_inventory_item_image(self):
         self.inventory_item_image.click()
