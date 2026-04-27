@@ -99,7 +99,7 @@ class TestCheckout:
         checkout_step_two_page = CheckoutStepTwoPage(page)
         checkout_step_two_page.verify_cart_items_count(1)
         checkout_step_two_page.verify_inventory_item_name("Backpack")
-        checkout_step_two_page.verify_price(price)
+        checkout_step_two_page.verify_first_item_price(price)
         checkout_step_two_page.verify_payment_information("SauceCard #31337")
         checkout_step_two_page.verify_shipping_information("Pony Express")
         checkout_step_two_page.verify_item_total_price(price)

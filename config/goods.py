@@ -1,4 +1,6 @@
 ITEM_NAME = "Sauce Labs Backpack"
+ITEM_PRICE = "$29.99"
+ITEM_QUANTITY = "1"
 
 GOODS_EXPECTED_NAMES = ["Sauce Labs Backpack", "Sauce Labs Bike Light",
                         "Sauce Labs Bolt T-Shirt", "Sauce Labs Fleece Jacket",

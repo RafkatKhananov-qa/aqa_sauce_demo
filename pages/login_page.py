@@ -12,6 +12,7 @@ class LoginPage(BasePage):
         self.password_input = page.locator("#password")
         self.login_button = page.locator("#login-button")
         self.error_message = page.locator("[data-test='error']")
+        self.error_message_container_error = page.locator(".error-message-container.error")
 
     def verify_page_loaded(self):
         expect(self.page).to_have_url(BASE_URL)
@@ -56,3 +57,4 @@ class LoginPage(BasePage):
     def verify_error_message(self, expected_text):
         expect(self.error_message).to_be_visible()
         expect(self.error_message).to_have_text(expected_text)
+        expect(self.error_message_container_error).to_have_css("background-color", "rgb(226, 35, 26)")
