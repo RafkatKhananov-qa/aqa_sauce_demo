@@ -15,7 +15,7 @@ def test_perf_002(page):
     login_page.open()
     login_page.fill_username(USER1_NAME)
     login_page.fill_password(USER_PASSWORD)
-    assert login_page.get_login_button_response_time_ms() < 1000
+    assert login_page.click_login_and_get_response_time_ms() < 1000
 
 
 def test_perf_003(page):

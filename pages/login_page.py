@@ -48,11 +48,12 @@ class LoginPage(BasePage):
         self.authorize(username, password)
         self.verify_login_success()
         
-    def get_login_button_response_time_ms(self):
-        start = time.time()
-        self.login_button.click()
-        self.page.wait_for_load_state("load")
-        return (time.time() - start) * 1000
+    def click_login_and_get_response_time_ms(self):
+        start = time.perf_counter()
+        self.click_login()
+        self.verify_login_success()
+        end = time.perf_counter()
+        return round((end - start) * 1000, 2)
 
     def verify_error_message(self, expected_text):
         expect(self.error_message).to_be_visible()
