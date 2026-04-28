@@ -1,5 +1,7 @@
 import allure
+
 from config.base import CHECKOUT_STEP_ONE_URL, INVENTORY_ITEM_NAME
+
 from pages.cart_page import CartPage
 from pages.checkout.checkout_step_one_page import CheckoutStepOnePage
 from pages.checkout.checkout_step_two_page import CheckoutStepTwoPage
@@ -9,37 +11,47 @@ from pages.inventory_page import InventoryPage
 @allure.feature("Checkout")
 class TestCheckout:
     @allure.story("Filling personal information form")
-    @allure.title("Пользователь не может продолжить оформление заказа, если поле First Name не заполнено")
+    @allure.title("Пользователь не может продолжить оформление заказа, "
+                  "если поле First Name не заполнено")
     def test_check_002(self, logged_in_page):
         logged_in_page.goto(CHECKOUT_STEP_ONE_URL)
         checkout_step_one_page = CheckoutStepOnePage(logged_in_page)
         checkout_step_one_page.enter_last_name("Ivanov")
         checkout_step_one_page.enter_postal_code("45679")
         checkout_step_one_page.click_continue_button()
-        checkout_step_one_page.verify_text_in_field_is_required_error("Error: First Name is required")
+        checkout_step_one_page.verify_text_in_field_is_required_error(
+            "Error: First Name is required"
+        )
 
     @allure.story("Filling personal information form")
-    @allure.title("Пользователь не может продолжить оформление заказа, если поле Last Name не заполнено")
+    @allure.title("Пользователь не может продолжить оформление заказа, "
+                  "если поле Last Name не заполнено")
     def test_check_003(self, logged_in_page):
         logged_in_page.goto(CHECKOUT_STEP_ONE_URL)
         checkout_step_one_page = CheckoutStepOnePage(logged_in_page)
         checkout_step_one_page.enter_first_name("Ivan")
         checkout_step_one_page.enter_postal_code("45679")
         checkout_step_one_page.click_continue_button()
-        checkout_step_one_page.verify_text_in_field_is_required_error("Error: Last Name is required")
+        checkout_step_one_page.verify_text_in_field_is_required_error(
+            "Error: Last Name is required"
+        )
 
     @allure.story("Filling personal information form")
-    @allure.title("Пользователь не может продолжить оформление заказа, если поле Postal Code не заполнено")
+    @allure.title("Пользователь не может продолжить оформление заказа, "
+                  "если поле Postal Code не заполнено")
     def test_check_004(self, logged_in_page):
         logged_in_page.goto(CHECKOUT_STEP_ONE_URL)
         checkout_step_one_page = CheckoutStepOnePage(logged_in_page)
         checkout_step_one_page.enter_first_name("Ivan")
         checkout_step_one_page.enter_last_name("Ivanov")
         checkout_step_one_page.click_continue_button()
-        checkout_step_one_page.verify_text_in_field_is_required_error("Error: Postal Code is required")
+        checkout_step_one_page.verify_text_in_field_is_required_error(
+            "Error: Postal Code is required"
+        )
 
     @allure.story("Filling personal information form")
-    @allure.title("Пользователь может продолжить оформление заказа, если заполнены поля First Name, Last Name, Postal Code")
+    @allure.title("Пользователь может продолжить оформление заказа, "
+                  "если заполнены поля First Name, Last Name, Postal Code")
     def test_check_005(self, logged_in_page):
         logged_in_page.goto(CHECKOUT_STEP_ONE_URL)
         checkout_step_one_page = CheckoutStepOnePage(logged_in_page)
@@ -48,7 +60,8 @@ class TestCheckout:
         checkout_step_one_page.verify_checkout_step_two()
 
     @allure.story("Navigation from checkout")
-    @allure.title("Кнопка Cancel на шаге оформления заказа возвращает пользователя в корзину")
+    @allure.title("Кнопка Cancel на шаге оформления заказа "
+                  "возвращает пользователя в корзину")
     def test_check_006(self, logged_in_page):
         logged_in_page.goto(CHECKOUT_STEP_ONE_URL)
         checkout_step_one_page = CheckoutStepOnePage(logged_in_page)
@@ -57,7 +70,8 @@ class TestCheckout:
         checkout_step_one_page.verify_cart_page()
 
     @allure.story("Navigation from checkout")
-    @allure.title("После отмены оформления заказа пользователь может вернуться на страницу товаров через корзину")
+    @allure.title("После отмены оформления заказа пользователь "
+                  "может вернуться на страницу товаров через корзину")
     def test_check_007(self, logged_in_page):
         logged_in_page.goto(CHECKOUT_STEP_ONE_URL)
         checkout_step_one_page = CheckoutStepOnePage(logged_in_page)
@@ -69,7 +83,8 @@ class TestCheckout:
         cart_page.verify_inventory()
 
     @allure.story("Order summary")
-    @allure.title("На странице подтверждения заказа отображается корректное количество товаров и итоговая сумма (1 товар)")
+    @allure.title("На странице подтверждения заказа отображается "
+                  "корректное количество товаров и итоговая сумма (1 товар)")
     def test_check_008(self, logged_in_page):
         inventory_page = InventoryPage(logged_in_page)
         inventory_page.click_add_to_cart_button()
@@ -87,7 +102,8 @@ class TestCheckout:
         checkout_step_two_page.verify_total_price()
 
     @allure.story("Order summary")
-    @allure.title("На странице подтверждения заказа отображается корректное количество товаров и итоговая сумма (2 товара)")
+    @allure.title("На странице подтверждения заказа отображается "
+                  "корректное количество товаров и итоговая сумма (2 товара)")
     def test_check_010(self, logged_in_page):
         inventory_page = InventoryPage(logged_in_page)
         inventory_page.click_add_to_cart_buttons_by_indexes([0, 1])

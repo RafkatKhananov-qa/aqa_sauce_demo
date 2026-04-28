@@ -1,6 +1,8 @@
 import allure
+
 from config.base import INVENTORY_URL
 from config.users import USER_PASSWORD, USER1_NAME
+
 from pages.base_page import BasePage
 from pages.login_page import LoginPage
 
@@ -38,7 +40,8 @@ class TestPerformance:
         login_page.login_and_verify(USER1_NAME, USER_PASSWORD)
 
     @allure.story("Memory Usage")
-    @allure.title("Потребление памяти не увеличивается более чем на 20% при открытии 20 вкладок")
+    @allure.title("Потребление памяти не увеличивается более "
+                  "чем на 20% при открытии 20 вкладок")
     def test_perf_005(self, logged_in_page):
         base_page = BasePage(logged_in_page)
         memory_before = base_page.get_memory_usage_bytes()

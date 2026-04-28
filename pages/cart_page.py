@@ -1,8 +1,10 @@
 import re
+
+import allure
 from playwright.sync_api import expect
+
 from pages.base_page import BasePage
 from pages.inventory_page import InventoryPage
-import allure
 
 
 class CartPage(BasePage):

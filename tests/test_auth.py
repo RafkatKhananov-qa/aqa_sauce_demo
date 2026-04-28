@@ -1,9 +1,12 @@
 import allure
 import pytest
-from config.users import (USER2_NAME, USER3_NAME, USER4_NAME, USER5_NAME,
-                          USER_WRONG_PASSWORD, LOGIN_ERROR_MESSAGE, USER_PASSWORD,
-                          USER_WRONG_NAME, USERNAME_REQUIRED_MESSAGE, USER1_NAME,
-                          PASSWORD_REQUIRED_MESSAGE, SQL_INJECTION_LOGIN, XSS_LOGIN)
+
+from config.users import (
+    USER2_NAME, USER3_NAME, USER4_NAME, USER5_NAME,
+    USER_WRONG_PASSWORD, LOGIN_ERROR_MESSAGE, USER_PASSWORD,
+    USER_WRONG_NAME, USERNAME_REQUIRED_MESSAGE, USER1_NAME,
+    PASSWORD_REQUIRED_MESSAGE, SQL_INJECTION_LOGIN, XSS_LOGIN,
+)
 from pages.login_page import LoginPage
 
 
@@ -18,7 +21,7 @@ class TestLogin:
         (USER4_NAME, USER_PASSWORD),
         (USER5_NAME, USER_PASSWORD)
     ])
-    def test_auth_001_002(page, username, password):
+    def test_auth_001_002(self, page, username, password):
         login_page = LoginPage(page)
 
         login_page.open()
@@ -36,7 +39,7 @@ class TestLogin:
         (SQL_INJECTION_LOGIN, USER_PASSWORD, LOGIN_ERROR_MESSAGE),
         (XSS_LOGIN, USER_PASSWORD, LOGIN_ERROR_MESSAGE),
     ])
-    def test_auth_003_004_005_006_007_008(page, username, password, error_message):
+    def test_auth_003_004_005_006_007_008(self, page, username, password, error_message):
         login_page = LoginPage(page)
 
         login_page.open()
@@ -64,7 +67,8 @@ class TestLogin:
         login_page.verify_login_success()
 
     @allure.story("User remains authorized after page reload")
-    @allure.title("Пользователь остаётся авторизованным после перезагрузки страницы")
+    @allure.title("Пользователь остаётся авторизованным "
+                  "после перезагрузки страницы")
     @pytest.mark.parametrize("username, password", [
         (USER1_NAME, USER_PASSWORD)
     ])

@@ -1,6 +1,7 @@
-from playwright.sync_api import expect
-from config.base import BASE_URL
 import allure
+from playwright.sync_api import expect
+
+from config.base import BASE_URL
 
 
 class BasePage:
@@ -33,12 +34,16 @@ class BasePage:
         cdp = self.page.context.new_cdp_session(self.page)
         cdp.send("Performance.enable")
         metrics = cdp.send("Performance.getMetrics")
-        return next(m["value"] for m in metrics["metrics"] if m["name"] == "JSHeapUsedSize")
+        return next(
+            m["value"] for m in metrics["metrics"]
+            if m["name"] == "JSHeapUsedSize"
+        )
 
     @allure.step("Получить время загрузи страницы в миллисекундах")
     def get_load_time_ms(self):
         return self.page.evaluate(
-            "() => performance.timing.loadEventEnd - performance.timing.navigationStart"
+            "() => performance.timing.loadEventEnd"
+            " - performance.timing.navigationStart"
         )
 
     @allure.step("Кликнуть по иконке корзины в header сайта")

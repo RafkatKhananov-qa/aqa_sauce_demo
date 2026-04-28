@@ -1,6 +1,8 @@
 import allure
+
 from config.goods import ITEM_NAME, ITEM_PRICE, ITEM_QUANTITY
 from config.users import USER1_NAME, USER_PASSWORD, USER2_NAME
+
 from pages.cart_page import CartPage
 from pages.inventory_page import InventoryPage
 from pages.login_page import LoginPage

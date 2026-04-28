@@ -1,9 +1,11 @@
 import re
-import allure
 import time
+
+import allure
+from playwright.sync_api import expect
+
 from config.base import BASE_URL
 from pages.base_page import BasePage
-from playwright.sync_api import expect
 
 
 class LoginPage(BasePage):
@@ -70,4 +72,6 @@ class LoginPage(BasePage):
     def verify_error_message(self, expected_text):
         expect(self.error_message).to_be_visible()
         expect(self.error_message).to_have_text(expected_text)
-        expect(self.error_message_container_error).to_have_css("background-color", "rgb(226, 35, 26)")
+        expect(self.error_message_container_error).to_have_css(
+            "background-color", "rgb(226, 35, 26)"
+        )

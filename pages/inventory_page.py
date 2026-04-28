@@ -1,9 +1,11 @@
 import re
 from enum import Enum
+
+import allure
 from playwright.sync_api import expect
+
 from config.goods import ITEM_NAME
 from pages.base_page import BasePage
-import allure
 
 
 class SortOption(Enum):
@@ -37,7 +39,9 @@ class InventoryPage(BasePage):
     @allure.step("Проверить количество карточек товаров")
     def verify_inventory_items_count(self, expected_count):
         actual_count = self.get_inventory_item_count()
-        assert actual_count == expected_count, f"Ожидалось {expected_count} товаров, найдено: {actual_count}"
+        assert actual_count == expected_count, (
+            f"Ожидалось {expected_count} товаров, найдено: {actual_count}"
+        )
 
     @allure.step("Получить названия товаров")
     def get_inventory_item_names(self):

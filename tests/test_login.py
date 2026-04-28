@@ -1,6 +1,7 @@
 import allure
-from pages.login_page import LoginPage
+
 from config.users import USER1_NAME, USER_PASSWORD
+from pages.login_page import LoginPage
 
 
 @allure.feature("Login")

@@ -1,5 +1,7 @@
+import allure
 import pytest
 from playwright.sync_api import sync_playwright
+
 from config.users import USER1_NAME, USER_PASSWORD
 from pages.login_page import LoginPage
 
@@ -17,17 +19,28 @@ from pages.login_page import LoginPage
 ])
 def custom_page(request):
     browser_name, (width, height), headless = request.param
+
     with sync_playwright() as pw:
-        browser_type = getattr(pw, browser_name)
-        browser = browser_type.launch(headless=headless)
-        context = browser.new_context(
-            viewport={"width": width, "height": height}
-        )
-        page = context.new_page()
+        with allure.step(f"Запуск браузера: {browser_name}, headless={headless}"):
+            browser_type = getattr(pw, browser_name)
+            browser = browser_type.launch(headless=headless)
+
+        with allure.step(f"Создание контекста с viewport {width}x{height}"):
+            context = browser.new_context(
+                viewport={"width": width, "height": height}
+            )
+
+        with allure.step("Открытие новой страницы"):
+            page = context.new_page()
+
         yield page
-        browser.close()
+
+        with allure.step("Закрытие браузера"):
+            browser.close()
 
 
+@allure.story("Login")
+@allure.title("Пользователь может авторизоваться в разных браузерах и разрешениях")
 def test_cross_browser(custom_page):
     login_page = LoginPage(custom_page)
     login_page.login_and_verify(USER1_NAME, USER_PASSWORD)

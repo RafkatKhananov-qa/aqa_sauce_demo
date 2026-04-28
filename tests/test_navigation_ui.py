@@ -1,5 +1,6 @@
 import allure
 import pytest
+
 from pages.inventory_page import InventoryPage
 
 
@@ -15,7 +16,8 @@ class TestNavigation:
         inventory_page.verify_sidebar_is_not_visible()
 
     @allure.story("Add to cart buttons are clickable")
-    @allure.title("Кнопки Add to cart кликабельны на десктопе и мобильном устройстве")
+    @allure.title("Кнопки Add to cart кликабельны "
+                  "на десктопе и мобильном устройстве")
     @pytest.mark.parametrize("viewport", [
         pytest.param({"width": 375, "height": 812}, id="mobile"),
         pytest.param(None, id="desktop"),
