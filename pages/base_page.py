@@ -1,5 +1,6 @@
 from playwright.sync_api import expect
 from config.base import BASE_URL
+import allure
 
 
 class BasePage:
@@ -13,38 +14,49 @@ class BasePage:
         self.close_sidebar_button = page.locator("#react-burger-cross-btn")
         self.sidebar = page.locator(".bm-menu")
 
+    @allure.step("Открыть страницу входа на сайт Swag Labs")
     def open(self, url=BASE_URL):
         self.page.goto(url)
 
+    @allure.step("Кликнуть по иконке корзины в header сайта")
     def click_shopping_cart_icon(self):
         self.shopping_cart_icon.click()
 
+    @allure.step("Проверить количество товаров в корзине")
     def verify_items_count_in_bucket(self, num: str):
         expect(self.cart_badge).to_have_text(num)
 
+    @allure.step("Проверить, что корзина пуста")
     def verify_bucket_is_empty(self):
         expect(self.cart_badge).to_have_count(0)
 
+    @allure.step("Кликнуть по бургер-меню")
     def click_burger_menu_button(self):
         self.burger_menu_btn.click()
 
+    @allure.step("Кликнуть по кнопке Logout")
     def click_logout_button(self):
         self.logout_button.click()
 
+    @allure.step("Проверить, что элемент кликабелен")
     def click_visible_button(self, locator):
         expect(locator).to_be_visible()
         expect(locator).to_be_enabled()
         locator.click(trial=True)
 
+    @allure.step("Проверить, что все элементы кликабельны")
     def verify_all_clickable(self, locator):
         for i in range(locator.count()):
             self.click_visible_button(locator.nth(i))
 
+    @allure.step("Проверить, что все ссылки в боковом меню кликабельны")
     def verify_sidebar_links_are_clickable(self):
         self.verify_all_clickable(self.sidebar_links)
 
+    @allure.step("Закрыть боковое меню")
     def click_close_sidebar_button(self):
         self.close_sidebar_button.click()
 
+    @allure.step("Проверить, что боковое меню не отображается")
     def verify_sidebar_is_not_visible(self):
         expect(self.sidebar).not_to_be_visible()
