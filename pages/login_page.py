@@ -1,5 +1,6 @@
 import re
 import allure
+import time
 from config.base import BASE_URL
 from pages.base_page import BasePage
 from playwright.sync_api import expect
@@ -56,6 +57,14 @@ class LoginPage(BasePage):
         self.verify_page_loaded()
         self.authorize(username, password)
         self.verify_login_success()
+
+    @allure.step("Выполнить логин и измерить время загрузки после авторизации (мс)")
+    def click_login_and_get_response_time_ms(self):
+        start = time.perf_counter()
+        self.click_login()
+        self.verify_login_success()
+        end = time.perf_counter()
+        return round((end - start) * 1000, 2)
 
     @allure.step("Проверить, что сообщение об ошибке имеет текст и цвет")
     def verify_error_message(self, expected_text):
