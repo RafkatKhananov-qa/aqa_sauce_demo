@@ -41,6 +41,7 @@ class TestInventory:
                   "с валидными изображениями")
     def test_inv_004(self, logged_in_page):
         inventory_page = InventoryPage(logged_in_page)
+
         inventory_page.verify_inventory_item_images()
 
     @allure.story("Verifying inventory items sorting by price in ascending order")

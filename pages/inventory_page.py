@@ -18,7 +18,7 @@ class SortOption(Enum):
 class InventoryPage(BasePage):
     def __init__(self, page):
         super().__init__(page)
-        self.inventory_item = page.locator("//div[@class='inventory_item'][1]")
+        self.inventory_item = page.locator("//div[@class='inventory_item']")
         self.inventory_item_name = page.locator(".inventory_item_name")
         self.sauce_labs_backpack_item_name = page.get_by_text(ITEM_NAME)
         self.inventory_item_price = page.locator(".inventory_item_price")
@@ -55,6 +55,8 @@ class InventoryPage(BasePage):
     def verify_inventory_item_images(self):
         images = self.inventory_item_images
 
+        self.page.wait_for_load_state("networkidle")
+
         results = images.evaluate_all("""
                 (imgs) => imgs.map(img => ({
                     src: img.getAttribute("src"),
@@ -64,6 +66,7 @@ class InventoryPage(BasePage):
             """)
 
         for img in results:
+            print(f"src={img['src']}, complete={img['complete']}, width={img['width']}")
             assert img["src"], "У изображения отсутствует src"
             assert img["width"] > 0, f"Битое изображение: {img['src']}"
 
@@ -97,7 +100,7 @@ class InventoryPage(BasePage):
     def click_inventory_item_image(self):
         self.inventory_item_image.click()
 
-    @allure.step("Отсортировать товары по {option.value}")
+    @allure.step("Отсортировать товары")
     def sort_by(self, option: SortOption):
         self.sort_container.select_option(value=option.value)
 
