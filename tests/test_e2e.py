@@ -1,18 +1,24 @@
+import allure
+
 from config.base import INVENTORY_ITEM_NAME
 from config.users import USER1_NAME, USER_PASSWORD
+
 from pages.login_page import LoginPage
 from pages.cart_page import CartPage
 from pages.checkout.checkout_complete_page import CheckoutCompletePage
 from pages.checkout.checkout_step_one_page import CheckoutStepOnePage
 from pages.checkout.checkout_step_two_page import CheckoutStepTwoPage
 from pages.inventory_page import InventoryPage
+
 from utils.artifacts import save_screenshot, save_report
 from utils.helpers import verify_price_format
 from utils.logger import get_logger
 
 
+@allure.feature("E2E")
 class TestCheckout:
-
+    @allure.story("Ordering an item")
+    @allure.title("Полный цикл заказа товара")
     def test_check_001(self, page):
         results = {
             "test_name": "TC_SAUCE_001",

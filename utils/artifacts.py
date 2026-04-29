@@ -1,6 +1,7 @@
-from pathlib import Path
 import json
+
 from datetime import datetime
+from pathlib import Path
 
 _BASE_OUTPUT = Path(__file__).resolve().parent.parent / "output"
 
