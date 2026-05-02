@@ -18,6 +18,7 @@ class SortOption(Enum):
 class InventoryPage(BasePage):
     def __init__(self, page):
         super().__init__(page)
+        self.title = page.locator("[data-test='title']")
         self.inventory_item = page.locator("//div[@class='inventory_item']")
         self.inventory_item_name = page.locator(".inventory_item_name")
         self.sauce_labs_backpack_item_name = page.get_by_text(ITEM_NAME)
@@ -31,6 +32,9 @@ class InventoryPage(BasePage):
         self.inventory_item_images = page.locator("//img[@class='inventory_item_img']")
         self.sort_container = page.locator(".product_sort_container")
         self.remove_button = page.locator("//button[text()='Remove']")
+
+    def verify_title_is_visible(self):
+        expect(self.title).to_be_visible()
 
     @allure.step("Получить количество карточек товаров")
     def get_inventory_item_count(self):
@@ -80,9 +84,20 @@ class InventoryPage(BasePage):
         price = item.locator(".inventory_item_price").text_content().strip()
         return price
 
+    def verify_item_price_starts_with_dollar(self, item_name: str):
+        price = self.get_item_price(item_name)
+        assert price.startswith("$"), f"Цена не начинается с $: {price}"
+
+    def verify_inventory_item_price_starts_from_dollar(self):
+        assert self.inventory_item_price.startswith("$")
+
     @allure.step("Кликнуть кнопку 'Add to cart' для товара Sauce Labs Backpack")
     def click_add_to_cart_button(self):
         self.add_to_cart_button.click()
+
+    @allure.step("Кликнуть кнопку 'Add to cart' для товара Sauce Labs Backpack (tap)")
+    def tap_add_to_cart_button(self):
+        self.add_to_cart_button.tap()
 
     @allure.step("Кликнуть кнопку 'Add to cart' в подробной странице товара")
     def click_add_to_cart_button_details(self):
@@ -99,6 +114,13 @@ class InventoryPage(BasePage):
     @allure.step("Кликнуть первое изображение товара на странице товаров")
     def click_inventory_item_image(self):
         self.inventory_item_image.click()
+
+    def verify_image_does_not_overflow(self):
+        result = self.inventory_item_image.evaluate("""
+                el => el.scrollWidth <= el.clientWidth
+            """)
+
+        assert result, "Изображение вызывает overflow"
 
     @allure.step("Отсортировать товары")
     def sort_by(self, option: SortOption):

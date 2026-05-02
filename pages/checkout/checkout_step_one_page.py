@@ -19,8 +19,11 @@ class CheckoutStepOnePage(BasePage):
     @allure.step("Заполнить имя, фамилию, почтовый код")
     def fill_form(self, first_name, last_name, postal_code):
         self.first_name.fill(first_name)
+        self.verify_first_name(first_name)
         self.last_name.fill(last_name)
+        self.verify_last_name(last_name)
         self.postal_code.fill(postal_code)
+        self.verify_postal_code(postal_code)
 
     @allure.step("Заполнить имя")
     def enter_first_name(self, first_name):
