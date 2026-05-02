@@ -1,5 +1,4 @@
 ITEM_NAME = "Sauce Labs Backpack"
-DOLLAR_SYMBOL = "$"
 ITEM_PRICE = "$29.99"
 ITEM_QUANTITY = "1"
 
