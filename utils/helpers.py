@@ -8,3 +8,8 @@ def price_to_float(price: str) -> float:
 
 def extract_price(text: str) -> str:
     return "$" + text.strip().split("$")[1]
+
+
+def log_step(logger, results, msg):
+    logger.info(msg)
+    results["steps"].append(msg)

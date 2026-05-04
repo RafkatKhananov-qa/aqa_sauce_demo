@@ -22,36 +22,55 @@ class LoginPage(BasePage):
         expect(self.page).to_have_url(BASE_URL)
 
     @allure.step("Ввести имя пользователя")
-    def fill_username(self, username):
+    def fill_username(self, username, use_tap=False):
+        if use_tap:
+            self.username_input.tap()
         self.username_input.fill(username)
 
     @allure.step("Проверить, что имя пользователя введено в поле")
     def verify_username(self, username):
         expect(self.username_input).to_have_value(username)
 
+    @allure.step("Проверить, что поле 'Имя пользователя' имеет type = text")
+    def verify_username_input_type(self):
+        expect(self.username_input).to_have_attribute("type", "text")
+
     @allure.step("Ввести пароль")
-    def fill_password(self, password):
+    def fill_password(self, password, use_tap=False):
+        if use_tap:
+            self.password_input.tap()
         self.password_input.fill(password)
 
     @allure.step("Проверить, что пароль введён в поле")
     def verify_password(self, password):
         expect(self.password_input).to_have_value(password)
 
+    @allure.step("Проверить, что поле 'Пароль' имеет type = password")
+    def verify_password_input_type(self):
+        expect(self.password_input).to_have_attribute("type", "password")
+
     @allure.step("Кликнуть кнопку логина")
     def click_login(self):
         self.login_button.click()
+
+    @allure.step("Нажать кнопку логина (tap)")
+    def tap_login(self):
+        self.login_button.tap()
 
     @allure.step("Проверить, что страница имеет путь /inventory.html")
     def verify_login_success(self):
         expect(self.page).to_have_url(re.compile(r".*/inventory.html"))
 
     @allure.step("Авторизоваться")
-    def authorize(self, username, password):
-        self.fill_username(username)
+    def authorize(self, username, password, use_tap=False):
+        self.fill_username(username, use_tap=use_tap)
         self.verify_username(username)
-        self.fill_password(password)
+        self.fill_password(password, use_tap=use_tap)
         self.verify_password(password)
-        self.click_login()
+        if use_tap:
+            self.tap_login()
+        else:
+            self.click_login()
 
     @allure.step("Авторизоваться и проверить url главной страницы")
     def login_and_verify(self, username: str, password: str):

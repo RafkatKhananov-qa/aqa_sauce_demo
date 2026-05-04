@@ -15,6 +15,32 @@ def page():
 
 
 @pytest.fixture
+def mobile_page(request):
+    params = request.param
+
+    device_name = params.get("device", "iPhone 11")
+    browser_name = params.get("browser", "chromium")
+
+    with sync_playwright() as p:
+        device = p.devices[device_name]
+
+        browser_type = {
+            "chromium": p.chromium,
+            "firefox": p.firefox,
+            "webkit": p.webkit
+        }[browser_name]
+
+        browser = browser_type.launch(headless=False)
+        context = browser.new_context(**device)
+        page = context.new_page()
+
+        yield page
+
+        context.close()
+        browser.close()
+
+
+@pytest.fixture
 def logged_in_page(page):
     login_page = LoginPage(page)
     login_page.open()

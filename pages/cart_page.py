@@ -60,6 +60,10 @@ class CartPage(BasePage):
     def click_checkout_button(self):
         self.checkout_button.click()
 
+    @allure.step("Нажать на кнопку Checkout (tap)")
+    def tap_checkout_button(self):
+        self.checkout_button.tap()
+
     @allure.step("Кликнуть по кнопке Continue Shopping")
     def click_continue_shopping_button(self):
         self.continue_shopping_button.click()
