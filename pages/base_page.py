@@ -91,7 +91,11 @@ class BasePage:
 
     @allure.step("Проверить, что боковое меню не отображается")
     def verify_sidebar_is_not_visible(self):
-        expect(self.sidebar).not_to_be_visible()
+        expect(self.sidebar).to_be_hidden()
+
+    @allure.step("Проверить, что боковое меню отображается")
+    def verify_sidebar_is_visible(self):
+        expect(self.sidebar).to_be_visible()
 
     @allure.step("Проверить, что страница не имеет горизонтального скролла")
     def verify_page_does_not_have_horizontal_scroll(self):
@@ -130,12 +134,11 @@ class BasePage:
     @allure.step("Проверить размер viewport")
     def verify_viewport_size(self, expected_width: int, expected_height: int):
         viewport = self.page.viewport_size
+        assert viewport["width"] == expected_width
+        assert viewport["height"] == expected_height
 
-        assert viewport["width"] == expected_width, \
-            f"Width: expected {expected_width}, got {viewport['width']}"
-
-        assert viewport["height"] == expected_height, \
-            f"Height: expected {expected_height}, got {viewport['height']}"
+        real_width = self.page.evaluate("() => window.innerWidth")
+        assert real_width == expected_width
 
     @allure.step("Проверить, что высота элемента не меньше {min_height}px")
     def verify_element_height_at_least(self, locator, min_height: int):
@@ -145,3 +148,26 @@ class BasePage:
         actual_height = box["height"]
         assert actual_height >= min_height, \
             f"Высота элемента {actual_height}px меньше {min_height}px"
+
+    @allure.step("Проверить, что ширина элемента не меньше {min_width}px и "
+                 "высота элемента не меньше {min_height}px ")
+    def verify_element_width_and_height_at_least(self, locator, min_width: int, min_height: int):
+        box = locator.bounding_box()
+        assert box is not None, "Элемент не найден или не виден"
+
+        actual_width = box["width"]
+        actual_height = box["height"]
+
+        assert actual_width >= min_width, \
+            f"Ширина элемента {actual_width}px меньше {min_width}px"
+        assert actual_height >= min_height, \
+            f"Высота элемента {actual_height}px меньше {min_height}px"
+
+    @allure.step("Проверить, что размер шрифта элемента не меньше {min_size}px")
+    def verify_element_font_size_at_least(self, locator, min_size: int):
+        font_size = locator.first.evaluate(
+            "el => parseFloat(getComputedStyle(el).fontSize)"
+        )
+
+        assert font_size >= min_size, \
+            f"Font size {font_size}px меньше {min_size}px"

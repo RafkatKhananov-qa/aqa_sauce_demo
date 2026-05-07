@@ -18,25 +18,64 @@ def page():
 def mobile_page(request):
     params = request.param
 
-    device_name = params.get("device", "iPhone 11")
-    browser_name = params.get("browser", "chromium")
+    device_name = params["device"]
+    browser_name = params["browser"]
+    landscape = params.get("landscape", False)
 
-    with sync_playwright() as p:
-        device = p.devices[device_name]
+    with sync_playwright() as pw:
+        browser = getattr(pw, browser_name).launch()
 
-        browser_type = {
-            "chromium": p.chromium,
-            "firefox": p.firefox,
-            "webkit": p.webkit
-        }[browser_name]
+        device = pw.devices[device_name].copy()
 
-        browser = browser_type.launch(headless=False)
+        if landscape:
+            device["viewport"] = {
+                "width": device["viewport"]["height"],
+                "height": device["viewport"]["width"]
+            }
+
         context = browser.new_context(**device)
+
         page = context.new_page()
 
         yield page
 
         context.close()
+        browser.close()
+
+
+@pytest.fixture
+def logged_in_mobile_page(request):
+    params = request.param
+
+    device_name = params["device"]
+    browser_name = params["browser"]
+    landscape = params.get("landscape", False)
+
+    with sync_playwright() as pw:
+        browser = getattr(pw, browser_name).launch()
+
+        device = pw.devices[device_name].copy()
+
+        if landscape:
+            device["viewport"] = {
+                "width": device["viewport"]["height"],
+                "height": device["viewport"]["width"]
+            }
+
+        context = browser.new_context(**device)
+        page = context.new_page()
+
+        login_page = LoginPage(page)
+        login_page.open()
+        login_page.verify_page_loaded()
+        login_page.verify_page_does_not_have_horizontal_scroll()
+        login_page.verify_username_input_type()
+        login_page.verify_password_input_type()
+        login_page.authorize(USER1_NAME, USER_PASSWORD, use_tap=True)
+        login_page.verify_login_success()
+
+        yield page
+
         browser.close()
 
 
