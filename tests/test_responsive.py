@@ -3,7 +3,9 @@ import pytest
 
 from config.mobile import (IPHONE_14_PRO_WIDTH, IPHONE_14_PRO_HEIGHT,
                            PIXEL_7_WIDTH, PIXEL_7_HEIGHT,
-                           IPHONE_8_LANDSCAPE_WIDTH, IPHONE_8_LANDSCAPE_HEIGHT)
+                           IPHONE_8_LANDSCAPE_WIDTH, IPHONE_8_LANDSCAPE_HEIGHT,
+                           MIN_INVENTORY_TITLE_FONT_SIZE, MIN_INVENTORY_ITEM_NAME_FONT_SIZE,
+                           MIN_INVENTORY_ITEM_DESCR_FONT_SIZE, MIN_ADD_TO_CART_BUTTON_FONT_SIZE)
 from config.users import (USER1_NAME, USER_PASSWORD, CHECKOUT_FIRST_NAME,
                           CHECKOUT_LAST_NAME, CHECKOUT_ZIP)
 from pages.cart_page import CartPage
@@ -45,8 +47,8 @@ class TestMobileResponsive:
     def test_resp_02(self, logged_in_mobile_page):
         inventory_page = InventoryPage(logged_in_mobile_page)
         inventory_page.verify_viewport_size(PIXEL_7_WIDTH, PIXEL_7_HEIGHT)
-        inventory_page.verify_element_font_size_at_least(inventory_page.title, 18)
-        inventory_page.verify_element_font_size_at_least(inventory_page.add_to_cart_button, 16)
+        inventory_page.verify_element_font_size_at_least(inventory_page.title, MIN_INVENTORY_TITLE_FONT_SIZE)
+        inventory_page.verify_element_font_size_at_least(inventory_page.add_to_cart_button, MIN_ADD_TO_CART_BUTTON_FONT_SIZE)
 
     @allure.story("Minimum size of tap targets")
     @allure.title("Все интерактивные элементы ≥20×20 px")
@@ -73,9 +75,9 @@ class TestMobileResponsive:
     def test_resp_04(self, logged_in_mobile_page):
         inventory_page = InventoryPage(logged_in_mobile_page)
         inventory_page.verify_viewport_size(PIXEL_7_WIDTH, PIXEL_7_HEIGHT)
-        inventory_page.verify_element_font_size_at_least(inventory_page.title, 18)
-        inventory_page.verify_element_font_size_at_least(inventory_page.inventory_item_name, 20)
-        inventory_page.verify_element_font_size_at_least(inventory_page.inventory_item_descr, 14)
+        inventory_page.verify_element_font_size_at_least(inventory_page.title, MIN_INVENTORY_TITLE_FONT_SIZE)
+        inventory_page.verify_element_font_size_at_least(inventory_page.inventory_item_name, MIN_INVENTORY_ITEM_NAME_FONT_SIZE)
+        inventory_page.verify_element_font_size_at_least(inventory_page.inventory_item_descr, MIN_INVENTORY_ITEM_DESCR_FONT_SIZE)
 
     @allure.story("Images are scaled correctly")
     @allure.title("Изображения не выходят за пределы контейнера")
