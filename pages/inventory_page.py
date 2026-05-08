@@ -33,6 +33,7 @@ class InventoryPage(BasePage):
         self.inventory_item_images = page.locator("//img[@class='inventory_item_img']")
         self.sort_container = page.locator(".product_sort_container")
         self.remove_button = page.locator("//button[text()='Remove']")
+        self.context_menu = page.locator(".context-menu")
 
     def verify_title_is_visible(self):
         expect(self.title).to_be_visible()
@@ -111,6 +112,10 @@ class InventoryPage(BasePage):
     def click_add_to_cart_button(self):
         self.add_to_cart_button.click()
 
+    @allure.step("Кликнуть кнопку 'Add to cart' для товара Sauce Labs Backpack с задержкой")
+    def click_add_to_cart_button_with_delay(self):
+        self.add_to_cart_button.click(button="left", delay=1500)
+
     @allure.step("Кликнуть кнопку 'Add to cart' для товара Sauce Labs Backpack (tap)")
     def tap_add_to_cart_button(self):
         self.add_to_cart_button.tap()
@@ -165,3 +170,63 @@ class InventoryPage(BasePage):
     @allure.step("Проверить, что кнопки Add to cart кликабельны")
     def verify_add_to_cart_buttons_are_clickable(self):
         self.verify_all_clickable(self.add_to_cart_buttons)
+
+    @allure.step("Проверить, что контекстное меню не появилось")
+    def verify_context_menu_is_not_visible(self):
+        expect(self.context_menu).not_to_be_visible()
+
+    @allure.step("Проверить прокрутку товаров без залипаний")
+    def swipe_goods(self):
+        swipe_x = 300
+        swipe_start_y = 1600
+        swipe_end_y = 100
+        swipe_distance = swipe_start_y - swipe_end_y  # 1500px
+        min_expected_scroll = swipe_distance * 0.3
+        steps = 20
+
+        before_scroll = self.page.evaluate("window.scrollY")
+
+        cdp = self.page.context.new_cdp_session(self.page)
+
+        cdp.send("Input.dispatchTouchEvent", {
+            "type": "touchStart",
+            "touchPoints": [{"x": swipe_x, "y": swipe_start_y, "id": 0,
+                             "radiusX": 1, "radiusY": 1, "force": 1}]
+        })
+        for i in range(1, steps + 1):
+            y = swipe_start_y - swipe_distance * i / steps
+            cdp.send("Input.dispatchTouchEvent", {
+                "type": "touchMove",
+                "touchPoints": [{"x": swipe_x, "y": y, "id": 0,
+                                 "radiusX": 1, "radiusY": 1, "force": 1}]
+            })
+        cdp.send("Input.dispatchTouchEvent", {
+            "type": "touchEnd",
+            "touchPoints": []
+        })
+        cdp.detach()
+
+        self.page.wait_for_timeout(500)
+
+        after_scroll = self.page.evaluate("window.scrollY")
+        scroll_delta = after_scroll - before_scroll
+
+        assert scroll_delta >= min_expected_scroll, (
+            f"Обнаружено залипание: страница прокрутилась на {scroll_delta:.0f}px "
+            f"при свайпе {swipe_distance}px (ожидалось минимум {min_expected_scroll:.0f}px)"
+        )
+
+    @allure.step("Проверить, что двойной тап не вызывает зум страницы")
+    def verify_double_tap_does_not_zoom(self):
+        scale_before = self.page.evaluate(
+            "() => window.visualViewport.scale"
+        )
+
+        self.page.locator("body").tap()
+        self.page.locator("body").tap()
+
+        scale_after = self.page.evaluate(
+            "() => window.visualViewport.scale"
+        )
+
+        assert scale_before == scale_after

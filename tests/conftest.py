@@ -8,7 +8,7 @@ from pages.login_page import LoginPage
 @pytest.fixture
 def page():
     with sync_playwright() as drv:
-        browser = drv.chromium.launch(headless=True)
+        browser = drv.chromium.launch(headless=False)
         page = browser.new_page()
         yield page
         browser.close()
@@ -23,7 +23,7 @@ def mobile_page(request):
     landscape = params.get("landscape", False)
 
     with sync_playwright() as pw:
-        browser = getattr(pw, browser_name).launch()
+        browser = getattr(pw, browser_name).launch(headless=False)
 
         device = pw.devices[device_name].copy()
 
