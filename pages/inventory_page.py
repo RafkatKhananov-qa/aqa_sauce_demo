@@ -22,6 +22,7 @@ class InventoryPage(BasePage):
         self.inventory_item = page.locator("//div[@class='inventory_item']")
         self.inventory_item_name = page.locator(".inventory_item_name")
         self.sauce_labs_backpack_item_name = page.get_by_text(ITEM_NAME)
+        self.inventory_item_descr = page.locator("[data-test='inventory-item-desc']")
         self.inventory_item_price = page.locator(".inventory_item_price")
         self.add_to_cart_button = page.locator("#add-to-cart-sauce-labs-backpack")
         self.add_to_cart_buttons = page.locator("//button[text()='Add to cart']")
@@ -73,6 +74,21 @@ class InventoryPage(BasePage):
             print(f"src={img['src']}, complete={img['complete']}, width={img['width']}")
             assert img["src"], "У изображения отсутствует src"
             assert img["width"] > 0, f"Битое изображение: {img['src']}"
+
+    @allure.step("Проверить корректное масштабирование всех изображений")
+    def verify_all_images_scale_correctly(self):
+        self.page.wait_for_load_state("networkidle")
+        results = self.inventory_item_images.evaluate_all("""
+            images => images.map(img => ({
+                isLoaded: img.complete,
+                fitsContainer: img.scrollWidth <= img.clientWidth
+            }))
+        """)
+
+        for result in results:
+            assert result["isLoaded"], "Одно из изображений не загрузилось"
+            assert result["fitsContainer"], \
+                "Одно из изображений выходит за пределы контейнера"
 
     @allure.step("Проверить, что название товара Sauce Labs Backpack видимо")
     def verify_backpack_visible(self):
