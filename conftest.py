@@ -52,7 +52,7 @@ def logged_in_mobile_page(request):
     landscape = params.get("landscape", False)
 
     with sync_playwright() as pw:
-        browser = getattr(pw, browser_name).launch()
+        browser = getattr(pw, browser_name).launch(headless=False)
 
         device = pw.devices[device_name].copy()
 

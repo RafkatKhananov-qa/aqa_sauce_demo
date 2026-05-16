@@ -35,6 +35,7 @@ class InventoryPage(BasePage):
         self.remove_button = page.locator("//button[text()='Remove']")
         self.context_menu = page.locator(".context-menu")
 
+    @allure.step("Проверить, что заголовок виден на странице")
     def verify_title_is_visible(self):
         expect(self.title).to_be_visible()
 
@@ -101,12 +102,14 @@ class InventoryPage(BasePage):
         price = item.locator(".inventory_item_price").text_content().strip()
         return price
 
+    @allure.step("Проверить, что цена товара начинается со знака $")
     def verify_item_price_starts_with_dollar(self, item_name: str):
         price = self.get_item_price(item_name)
         assert price.startswith("$"), f"Цена не начинается с $: {price}"
 
-    def verify_inventory_item_price_starts_from_dollar(self):
-        assert self.inventory_item_price.startswith("$")
+    # @allure.step("Проверить, что цена товара начинается со знака $")
+    # def verify_inventory_item_price_starts_from_dollar(self):
+    #     assert self.inventory_item_price.startswith("$")
 
     @allure.step("Кликнуть кнопку 'Add to cart' для товара Sauce Labs Backpack")
     def click_add_to_cart_button(self):
@@ -215,6 +218,10 @@ class InventoryPage(BasePage):
             f"Обнаружено залипание: страница прокрутилась на {scroll_delta:.0f}px "
             f"при свайпе {swipe_distance}px (ожидалось минимум {min_expected_scroll:.0f}px)"
         )
+
+    @allure.step("Получить srcset первого изображения на странице")
+    def get_first_image_srcset(self):
+        return self.page.locator("img").first.get_attribute("srcset")
 
     @allure.step("Проверить, что двойной тап не вызывает зум страницы")
     def verify_double_tap_does_not_zoom(self):

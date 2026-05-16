@@ -17,7 +17,7 @@ class BasePage:
 
     @allure.step("Открыть страницу входа на сайт Swag Labs")
     def open(self, url=BASE_URL):
-        self.page.goto(url)
+        self.page.goto(url, wait_until="domcontentloaded")
 
     @allure.step("Эмулировать сеть 3G")
     def emulate_3g(self):
@@ -29,6 +29,20 @@ class BasePage:
             "latency": 100
         })
 
+    @allure.step("Эмулировать потерю сети")
+    def emulate_offline(self):
+        self.page.route(
+            "**/*",
+            lambda route: route.abort()
+        )
+
+    @allure.step("Принудительная сборка мусора")
+    def force_gc(self):
+        cdp = self.page.context.new_cdp_session(self.page)
+        cdp.send("HeapProfiler.enable")
+        cdp.send("HeapProfiler.collectGarbage")
+        cdp.detach()
+
     @allure.step("Получить размер используемой JS-памяти")
     def get_memory_usage_bytes(self):
         cdp = self.page.context.new_cdp_session(self.page)
@@ -38,6 +52,52 @@ class BasePage:
             m["value"] for m in metrics["metrics"]
             if m["name"] == "JSHeapUsedSize"
         )
+
+    @allure.step("Получить First Contentful Paint в миллисекундах")
+    def get_fcp_ms(self):
+        return self.page.evaluate("""
+            () => new Promise((resolve) => {
+                const existing = performance.getEntriesByName(
+                    'first-contentful-paint'
+                );
+                if (existing.length > 0) {
+                    resolve(existing[0].startTime);
+                    return;
+                }
+                const observer = new PerformanceObserver((list) => {
+                    const entry = list.getEntriesByName(
+                        'first-contentful-paint'
+                    )[0];
+                    if (entry) {
+                        observer.disconnect();
+                        resolve(entry.startTime);
+                    }
+                });
+                observer.observe({ type: 'paint', buffered: true });
+                setTimeout(() => { observer.disconnect(); resolve(null); }, 5000);
+            })
+        """)
+
+    @allure.step("Включить отслеживание CLS")
+    def setup_cls_tracking(self):
+        self.page.add_init_script("""
+            window.clsValue = 0;
+            new PerformanceObserver((entryList) => {
+                for (const entry of entryList.getEntries()) {
+                    if (!entry.hadRecentInput) {
+                        window.clsValue += entry.value;
+                    }
+                }
+            }).observe({ type: 'layout-shift', buffered: true });
+        """)
+
+    @allure.step("Получить Cumulative Layout Shift")
+    def get_cls(self):
+        return self.page.evaluate("() => window.clsValue")
+
+    @allure.step("Получить Device Pixel Ratio")
+    def get_device_pixel_ratio(self):
+        return self.page.evaluate("() => window.devicePixelRatio")
 
     @allure.step("Получить время загрузи страницы в миллисекундах")
     def get_load_time_ms(self):
@@ -171,3 +231,7 @@ class BasePage:
 
         assert font_size >= min_size, \
             f"Font size {font_size}px меньше {min_size}px"
+
+    @allure.step("Дождаться полной загрузки страницы")
+    def wait_until_page_fully_loaded(self):
+        self.page.wait_for_load_state("load")

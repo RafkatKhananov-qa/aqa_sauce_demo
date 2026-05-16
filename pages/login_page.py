@@ -94,3 +94,9 @@ class LoginPage(BasePage):
         expect(self.error_message_container_error).to_have_css(
             "background-color", "rgb(226, 35, 26)"
         )
+
+    @allure.step("Проверить, что поле ввода логина, пароля, и кнопка логина видны на странице")
+    def verify_critical_content_visible(self):
+        expect(self.username_input).to_be_visible(timeout=2000)
+        expect(self.password_input).to_be_visible(timeout=2000)
+        expect(self.login_button).to_be_visible(timeout=2000)
