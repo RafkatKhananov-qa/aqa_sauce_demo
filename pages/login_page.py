@@ -1,11 +1,12 @@
-import re
 import time
 
 import allure
 from playwright.sync_api import expect
 
-from config.base import BASE_URL
+from config.base import BASE_URL, CRITICAL_CONTENT_TIMEOUT, INVENTORY_URL_PATTERN
 from pages.base_page import BasePage
+
+ERROR_BACKGROUND_CSS = ("background-color", "rgb(226, 35, 26)")
 
 
 class LoginPage(BasePage):
@@ -59,7 +60,7 @@ class LoginPage(BasePage):
 
     @allure.step("Проверить, что страница имеет путь /inventory.html")
     def verify_login_success(self):
-        expect(self.page).to_have_url(re.compile(r".*/inventory.html"))
+        expect(self.page).to_have_url(INVENTORY_URL_PATTERN)
 
     @allure.step("Авторизоваться")
     def authorize(self, username, password, use_tap=False):
@@ -92,11 +93,11 @@ class LoginPage(BasePage):
         expect(self.error_message).to_be_visible()
         expect(self.error_message).to_have_text(expected_text)
         expect(self.error_message_container_error).to_have_css(
-            "background-color", "rgb(226, 35, 26)"
+            *ERROR_BACKGROUND_CSS
         )
 
     @allure.step("Проверить, что поле ввода логина, пароля, и кнопка логина видны на странице")
     def verify_critical_content_visible(self):
-        expect(self.username_input).to_be_visible(timeout=2000)
-        expect(self.password_input).to_be_visible(timeout=2000)
-        expect(self.login_button).to_be_visible(timeout=2000)
+        expect(self.username_input).to_be_visible(timeout=CRITICAL_CONTENT_TIMEOUT)
+        expect(self.password_input).to_be_visible(timeout=CRITICAL_CONTENT_TIMEOUT)
+        expect(self.login_button).to_be_visible(timeout=CRITICAL_CONTENT_TIMEOUT)
