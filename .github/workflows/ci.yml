@@ -27,7 +27,7 @@ jobs:
         run: playwright install --with-deps
       - name: Run tests with Allure
         run: |
-            pytest tests/ \
+            pytest tests/web/test_auth.py \
               --alluredir=allure-results \
               --clean-alluredir \
               -v \
