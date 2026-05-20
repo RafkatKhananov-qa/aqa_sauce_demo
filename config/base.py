@@ -1,4 +1,13 @@
+import re
+
 BASE_URL = "https://www.saucedemo.com/"
 INVENTORY_URL = f"{BASE_URL}inventory.html"
 CHECKOUT_STEP_ONE_URL = f"{BASE_URL}checkout-step-one.html"
 INVENTORY_ITEM_NAME = "Sauce Labs Backpack"
+INVENTORY_ITEM_URL = f"{BASE_URL}inventory-item.html?id=0"
+
+CRITICAL_CONTENT_TIMEOUT = 2000
+
+INVENTORY_URL_PATTERN = re.compile(r".*/inventory\.html")
+CART_URL_PATTERN = re.compile(r".*/cart\.html")
+INVENTORY_ITEM_URL_PATTERN = re.compile(r".*/inventory-item\.html")
