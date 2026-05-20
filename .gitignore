@@ -10,4 +10,4 @@ output/
 .env
 venv/
 .pytest_cache/
-allure_results
+allure-results
