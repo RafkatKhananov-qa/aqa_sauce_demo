@@ -8,7 +8,7 @@ from pages.login_page import LoginPage
 @pytest.fixture
 def page():
     with sync_playwright() as drv:
-        browser = drv.chromium.launch(headless=False)
+        browser = drv.chromium.launch(headless=True)
         page = browser.new_page()
         yield page
         browser.close()
