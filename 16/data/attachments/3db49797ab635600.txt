@@ -1,0 +1,8 @@
+INFO     TC_MOBILE_001:helpers.py:14 Успешно авторизовались
+INFO     TC_MOBILE_001:helpers.py:14 Товар добавлен в корзину, цена: $29.99
+INFO     TC_MOBILE_001:helpers.py:14 Проверили товар в корзине, открыли Checkout Step One
+INFO     TC_MOBILE_001:helpers.py:14 Заполнили данные покупателя
+INFO     TC_MOBILE_001:helpers.py:14 Проверили итоговую информацию заказа и нажали Finish
+INFO     TC_MOBILE_001:helpers.py:14 Проверили страницу успешного завершения
+INFO     TC_MOBILE_001:helpers.py:14 Сохранили финальный скриншот
+INFO     TC_MOBILE_001:helpers.py:14 Вернулись на страницу товаров
