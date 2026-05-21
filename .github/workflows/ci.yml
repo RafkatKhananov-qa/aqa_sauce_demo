@@ -11,45 +11,63 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-            python-version: '3.11'
-            cache: 'pip'
+          python-version: '3.11'
+          cache: 'pip'
+
       - name: Install dependencies
         run: |
-            python -m pip install --upgrade pip
-            pip install -r requirements.txt
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
       - name: Install Playwright browsers
         run: playwright install --with-deps
+
       - name: Run tests with Allure
         run: |
-            pytest tests/web/test_e2e.py \
-              --alluredir=allure-results \
-              --clean-alluredir \
-              -v \
-              --tb=short
+          pytest tests/web/test_e2e.py \
+            --alluredir=allure-results \
+            --clean-alluredir \
+            -v \
+            --tb=short
+
       - name: Upload Allure results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-            name: allure-results-${{ github.run_number }}
-            path: allure-results/
-            retention-days: 30
+          name: allure-results-${{ github.run_number }}
+          path: allure-results/
+          retention-days: 30
+
+      - name: Load Allure history
+        if: always()
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: gh-pages
+
       - name: Generate Allure Report
         if: always()
         uses: simple-elf/allure-report-action@master
         with:
-            allure_results: allure-results
-            allure_report: allure-report
-            history: true
+          gh_pages: gh-pages
+          allure_results: allure-results
+          allure_report: allure-report
+          allure_history: allure-history
+
       - name: Deploy Report to GitHub Pages
-        if: always() && github.ref == 'refs/heads/main'
+        if: always() && github.ref == 'refs/heads/develop'
         uses: peaceiris/actions-gh-pages@v4
         with:
-            github_token: ${{ secrets.GITHUB_TOKEN }}
-            publish_dir: allure-report
-            destination_dir: reports
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: allure-history
