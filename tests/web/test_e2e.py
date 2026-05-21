@@ -17,7 +17,7 @@ from utils.logger import get_logger
 
 @allure.feature("E2E")
 class TestCheckout:
-    @allure.story("Ordering an item")
+    @allure.story("Ordering an Item")
     @allure.title("Полный цикл заказа товара")
     def test_check_001(self, page):
         results = {
