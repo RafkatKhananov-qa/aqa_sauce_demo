@@ -125,7 +125,7 @@ class TestMobileResponsive:
         checkout_complete_page.verify_page_does_not_have_horizontal_scroll()
 
     @allure.story("Correct display when screen is rotated (landscape)")
-    @allure.title("Эмуляция viewport: {width: 667, height: 375}")
+    @allure.title("Эмуляция viewport: width: 667, height: 375")
     @pytest.mark.parametrize("logged_in_mobile_page",
                              [
                                  {"device": "iPhone 8", "browser": "webkit", "landscape": True}
