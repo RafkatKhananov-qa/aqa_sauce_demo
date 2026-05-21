@@ -6,6 +6,8 @@ on:
   pull_request:
     branches: [master, develop]
   workflow_dispatch:
+  schedule:
+    - cron: '0 7 * * *'
 
 jobs:
   test:
@@ -34,7 +36,7 @@ jobs:
 
       - name: Run tests with Allure
         run: |
-          pytest tests/web/test_e2e.py \
+          pytest tests \
             --alluredir=allure-results \
             --clean-alluredir \
             -v
