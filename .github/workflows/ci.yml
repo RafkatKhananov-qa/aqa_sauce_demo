@@ -48,15 +48,14 @@ jobs:
 
       - name: Get Allure history
         if: always()
-        continue-on-error: true
-        uses: actions/checkout@v4
-        with:
-          ref: gh-pages
-          path: gh-pages
-
-      - name: Create gh-pages dir if branch does not exist
-        if: always()
-        run: mkdir -p gh-pages
+        run: |
+          if git ls-remote --exit-code --heads origin gh-pages; then
+            git fetch origin gh-pages --depth=1
+            mkdir -p gh-pages
+            git --work-tree=gh-pages checkout FETCH_HEAD -- .
+          else
+            mkdir -p gh-pages
+          fi
 
       - name: Generate Allure report
         if: always()
