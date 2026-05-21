@@ -54,6 +54,10 @@ jobs:
           ref: gh-pages
           path: gh-pages
 
+      - name: Create gh-pages dir if branch does not exist
+        if: always()
+        run: mkdir -p gh-pages
+
       - name: Generate Allure report
         if: always()
         uses: simple-elf/allure-report-action@v1.13
