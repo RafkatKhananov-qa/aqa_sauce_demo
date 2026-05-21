@@ -19,7 +19,7 @@ class TestCart:
 
         inventory_page = InventoryPage(page)
         inventory_page.click_add_to_cart_button()
-        inventory_page.verify_items_count_in_bucket("2")
+        inventory_page.verify_items_count_in_bucket("3")
 
     @allure.story("Adding items to cart")
     @allure.title("Пользователь может добавить несколько товаров в корзину")
