@@ -8,14 +8,12 @@ from pages.login_page import LoginPage
 
 @pytest.fixture(params=[
     pytest.param(("chromium", (1920, 1080), True), id="chromium-headless"),
-    pytest.param(("chromium", (1366, 768), False), id="chromium-headed"),
+    pytest.param(("chromium", (1366, 768), True), id="chromium-desktop-headless"),
     pytest.param(("chromium", (375, 667), True), id="chrome-mobile"),
-    pytest.param(("firefox", (375, 667), True), id="firefox-headless"),
-    pytest.param(("firefox", (1920, 1080), False), id="firefox-headed"),
+    pytest.param(("firefox", (375, 667), True), id="firefox-mobile-headless"),
     pytest.param(("firefox", (1920, 1080), True), id="firefox-desktop"),
-    pytest.param(("chromium", (1920, 1080), True), id="chrome-desktop"),
     pytest.param(("webkit", (1366, 768), True), id="webkit-headless"),
-    pytest.param(("webkit", (375, 667), False), id="webkit-headed"),
+    pytest.param(("webkit", (375, 667), True), id="webkit-mobile-headless"),
 ])
 def custom_page(request):
     browser_name, (width, height), headless = request.param
