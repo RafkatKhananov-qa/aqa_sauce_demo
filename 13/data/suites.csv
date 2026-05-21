@@ -1,0 +1,2 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","857","Полный цикл заказа товара","tests.web","Thu May 21 05:51:04 UTC 2026","passed","Thu May 21 05:51:05 UTC 2026","TestCheckout","test_e2e","",""
