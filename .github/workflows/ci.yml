@@ -94,4 +94,4 @@ jobs:
             https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
             📊 Allure report:
-            https://${{ github.repository_owner }}.github.io/aqa_sauce_demo/${{ github.run_number }}/index.html
+            https://${{ github.repository_owner }}.github.io/aqa\_sauce\_demo/${{ github.run_number }}/index.html
