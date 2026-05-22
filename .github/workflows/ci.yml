@@ -69,7 +69,7 @@ jobs:
           allure_history: allure-history
 
       - name: Deploy report
-        if: always() && github.ref == 'refs/heads/develop'
+        if: always() && (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/master')
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
