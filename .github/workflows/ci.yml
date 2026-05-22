@@ -75,3 +75,11 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: allure-history
+      - name: Send Telegram Notification
+        uses: appleboy/telegram-action@v1.0.1  # ← обязательно с "v"!
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          format: markdown
+          message: |
+            Тесты завершены!
