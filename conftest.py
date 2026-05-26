@@ -27,13 +27,28 @@ def mobile_page(request):
 
         device = pw.devices[device_name].copy()
 
+        scale = params.get("device_scale_factor")
+        if scale is not None:
+            device["device_scale_factor"] = scale
+
+        extra = {}
+        locale = params.get("locale")
+        timezone_id = params.get("timezone_id")
+        reduced_motion = params.get("reduced_motion")
+        if locale:
+            extra["locale"] = locale
+        if timezone_id:
+            extra["timezone_id"] = timezone_id
+        if reduced_motion:
+            extra["reduced_motion"] = "reduce"
+
         if landscape:
             device["viewport"] = {
                 "width": device["viewport"]["height"],
                 "height": device["viewport"]["width"]
             }
 
-        context = browser.new_context(**device)
+        context = browser.new_context(**device, **extra)
 
         page = context.new_page()
 
