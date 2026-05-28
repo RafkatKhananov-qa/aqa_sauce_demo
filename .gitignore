@@ -11,3 +11,4 @@ output/
 venv/
 .pytest_cache/
 allure-results
+screenshots/

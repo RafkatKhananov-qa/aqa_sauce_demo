@@ -1,7 +1,57 @@
+import re
+from pathlib import Path
+
 import allure
 from playwright.sync_api import expect
 
 from config.base import BASE_URL
+
+# ---------------------------------------------------------------------------
+# WCAG 2.1 contrast helpers (module-level, не зависят от страницы)
+# ---------------------------------------------------------------------------
+
+_GET_ELEMENT_COLORS_JS = """
+(selector) => {
+    const el = document.querySelector(selector);
+    if (!el) return null;
+    const color = getComputedStyle(el).color;
+
+    // Поднимаемся по DOM, пока не найдём непрозрачный фон
+    let node = el;
+    let bgColor = 'rgb(255, 255, 255)';
+    while (node) {
+        const bg = getComputedStyle(node).backgroundColor;
+        if (bg && bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent') {
+            bgColor = bg;
+            break;
+        }
+        node = node.parentElement;
+    }
+    return { color, bgColor };
+}
+"""
+
+
+def _parse_rgb(css: str) -> tuple:
+    """'rgb(19, 35, 34)' или 'rgba(...)' → (r, g, b)."""
+    nums = re.findall(r'[\d.]+', css)
+    return tuple(int(float(x)) for x in nums[:3])
+
+
+def _relative_luminance(r: int, g: int, b: int) -> float:
+    """Относительная яркость по WCAG 2.1 (IEC 61966-2-1)."""
+    def linearize(v: int) -> float:
+        s = v / 255
+        return s / 12.92 if s <= 0.04045 else ((s + 0.055) / 1.055) ** 2.4
+    return 0.2126 * linearize(r) + 0.7152 * linearize(g) + 0.0722 * linearize(b)
+
+
+def _contrast_ratio(fg: tuple, bg: tuple) -> float:
+    """Коэффициент контраста по WCAG 2.1: (L_светлый + 0.05) / (L_тёмный + 0.05)."""
+    L1 = _relative_luminance(*fg)
+    L2 = _relative_luminance(*bg)
+    lighter, darker = max(L1, L2), min(L1, L2)
+    return round((lighter + 0.05) / (darker + 0.05), 2)
 
 
 class BasePage:
@@ -99,7 +149,47 @@ class BasePage:
     def get_device_pixel_ratio(self):
         return self.page.evaluate("() => window.devicePixelRatio")
 
-    @allure.step("Получить время загрузи страницы в миллисекундах")
+    @allure.step("Проверить Device Pixel Ratio равен {expected_dpr}")
+    def verify_device_pixel_ratio(self, expected_dpr: float):
+        actual = self.get_device_pixel_ratio()
+        assert actual == expected_dpr, \
+            f"devicePixelRatio = {actual}, ожидался {expected_dpr}"
+
+    @allure.step("Получить язык браузера (navigator.language)")
+    def get_navigator_language(self):
+        return self.page.evaluate("() => navigator.language")
+
+    @allure.step("Проверить язык браузера равен {expected_locale}")
+    def verify_navigator_language(self, expected_locale: str):
+        actual = self.get_navigator_language()
+        assert actual == expected_locale, \
+            f"navigator.language = '{actual}', ожидался '{expected_locale}'"
+
+    @allure.step("Получить смещение часового пояса в часах")
+    def get_timezone_offset_hours(self):
+        return self.page.evaluate("() => -new Date().getTimezoneOffset() / 60")
+
+    @allure.step("Проверить смещение часового пояса равно UTC+{expected_offset_hours}")
+    def verify_timezone_offset_hours(self, expected_offset_hours: int):
+        actual = self.get_timezone_offset_hours()
+        assert actual == expected_offset_hours, \
+            f"Смещение часового пояса = UTC+{actual}, ожидался UTC+{expected_offset_hours}"
+
+    @allure.step("Проверить кодировку страницы UTF-8")
+    def verify_page_charset_utf8(self):
+        charset = self.page.evaluate("() => document.characterSet")
+        assert charset.upper() == "UTF-8", \
+            f"Кодировка страницы: {charset}, ожидалась UTF-8"
+
+    @allure.step("Проверить отсутствие символов замены (U+FFFD) на странице")
+    def verify_no_encoding_errors(self):
+        has_replacement_char = self.page.evaluate(
+            "() => document.body.innerText.includes('\uFFFD')"
+        )
+        assert not has_replacement_char, \
+            "На странице обнаружены символы замены (U+FFFD) — возможна проблема с кодировкой"
+
+    @allure.step("Получить время загрузки страницы в миллисекундах")
     def get_load_time_ms(self):
         return self.page.evaluate(
             "() => performance.timing.loadEventEnd"
@@ -235,3 +325,253 @@ class BasePage:
     @allure.step("Дождаться полной загрузки страницы")
     def wait_until_page_fully_loaded(self):
         self.page.wait_for_load_state("load")
+
+    @allure.step("Проверить, что медиазапрос prefers-reduced-motion: reduce активен")
+    def verify_prefers_reduced_motion_active(self):
+        matches = self.page.evaluate(
+            "() => window.matchMedia('(prefers-reduced-motion: reduce)').matches"
+        )
+        assert matches, "prefers-reduced-motion: reduce не активен в браузере"
+
+    @allure.step("Проверить, что элемент не скрыт анимацией (не hidden, не прозрачен)")
+    def verify_element_not_hidden_by_animation(self, locator):
+        result = locator.evaluate("""
+            el => ({
+                visibility: getComputedStyle(el).visibility,
+                opacity: parseFloat(getComputedStyle(el).opacity),
+                display: getComputedStyle(el).display
+            })
+        """)
+        assert result["visibility"] != "hidden", \
+            "Элемент скрыт через visibility:hidden — возможно, заблокирован анимацией"
+        assert result["display"] != "none", \
+            "Элемент скрыт через display:none — возможно, заблокирован анимацией"
+        assert result["opacity"] > 0, \
+            f"Элемент прозрачен (opacity={result['opacity']}) — возможно, заблокирован анимацией"
+
+    @allure.step("Проверить доступность бокового меню при reduced motion")
+    def verify_burger_menu_accessible_with_reduced_motion(self):
+        self.burger_menu_btn.tap()
+        expect(self.sidebar).to_be_visible()
+        self.verify_sidebar_links_are_clickable()
+        self.close_sidebar_button.tap()
+        expect(self.sidebar).to_be_hidden()
+
+    @allure.step("Получить User-Agent браузера")
+    def get_user_agent(self) -> str:
+        return self.page.evaluate("() => navigator.userAgent")
+
+    @allure.step("Проверить, что User-Agent является мобильным")
+    def verify_user_agent_is_mobile(self):
+        ua = self.get_user_agent()
+        mobile_keywords = ("Mobile", "Android", "iPhone", "iPad")
+        assert any(kw in ua for kw in mobile_keywords), \
+            f"navigator.userAgent не является мобильным: {ua}"
+
+    @allure.step("Открыть страницу, перехватить User-Agent из HTTP-запроса и проверить, что он мобильный")
+    def open_and_verify_request_user_agent_is_mobile(self, url: str = BASE_URL):
+        # page.on("request") + wait_until="domcontentloaded" вызывают deadlock в webkit:
+        # listener держит event loop, и DOMContentLoaded никогда не приходит.
+        # Решение: wait_until="commit" (headers получены => request уже захвачен),
+        # снимаем listener, затем отдельно ждём domcontentloaded без активного слушателя.
+        captured = {}
+
+        def on_request(request):
+            if not captured and request.resource_type == "document":
+                captured["ua"] = request.headers.get("user-agent", "")
+
+        self.page.on("request", on_request)
+        try:
+            self.page.goto(url, wait_until="commit")
+        finally:
+            self.page.remove_listener("request", on_request)
+
+        self.page.wait_for_load_state("domcontentloaded")
+
+        ua = captured.get("ua", "")
+        mobile_keywords = ("Mobile", "Android", "iPhone", "iPad")
+        assert ua, "User-Agent не был перехвачен из HTTP-запроса к серверу"
+        assert any(kw in ua for kw in mobile_keywords), \
+            f"User-Agent в HTTP-запросе к серверу не является мобильным: {ua}"
+
+    @allure.step("Проверить, что HTML-ответ содержит мобильный meta viewport")
+    def verify_response_contains_mobile_viewport(self):
+        html = self.page.content()
+        assert "viewport" in html, \
+            "В HTML-ответе не найден тег <meta name='viewport'>"
+        assert "width=device-width" in html, \
+            "Meta viewport не содержит width=device-width"
+
+    @allure.step("Проверить, что HTML-ответ содержит классы мобильной навигации")
+    def verify_response_contains_mobile_nav_classes(self):
+        html = self.page.content()
+        mobile_classes = ("bm-burger-button", "bm-menu", "bm-item-list")
+        for cls in mobile_classes:
+            assert cls in html, \
+                f"В HTML-ответе не найден мобильный класс '{cls}'"
+
+    @allure.step("Проверить наличие мобильной навигации (hamburger-меню) в DOM")
+    def verify_mobile_navigation_present(self):
+        burger_button = self.page.locator(".bm-burger-button")
+        expect(burger_button).to_be_visible()
+
+    # --- Методы проверки изоляции контекстов ---
+
+    @allure.step("Получить значение куки session-username")
+    def get_session_cookie(self) -> str:
+        for cookie in self.page.context.cookies():
+            if cookie["name"] == "session-username":
+                return cookie["value"]
+        return ""
+
+    @allure.step("Проверить, что сессионная кука установлена (контекст аутентифицирован)")
+    def verify_session_cookie_exists(self):
+        value = self.get_session_cookie()
+        assert value, \
+            "Кука session-username отсутствует — сессия не создана"
+
+    @allure.step("Проверить, что сессионная кука отсутствует (свежий / разлогиненный контекст)")
+    def verify_no_session_cookie(self):
+        value = self.get_session_cookie()
+        assert not value, \
+            f"Кука session-username присутствует в контексте: '{value}' — контексты не изолированы"
+
+    @allure.step("Получить содержимое корзины из localStorage")
+    def get_cart_storage_contents(self) -> list:
+        return self.page.evaluate(
+            "() => JSON.parse(localStorage.getItem('cart-contents') || '[]')"
+        )
+
+    @allure.step("Проверить, что cart-contents в localStorage пуст (корзина не унаследована)")
+    def verify_cart_storage_is_empty(self):
+        contents = self.get_cart_storage_contents()
+        assert contents == [], \
+            f"localStorage cart-contents не пуст: {contents} — состояние унаследовано из другого контекста"
+
+    @allure.step("Проверить, что в localStorage ровно {expected_count} позиций в корзине")
+    def verify_cart_storage_count(self, expected_count: int):
+        contents = self.get_cart_storage_contents()
+        assert len(contents) == expected_count, \
+            (f"localStorage cart-contents содержит {len(contents)} позиций {contents}, "
+             f"ожидалось {expected_count} — возможна утечка состояния из другого контекста")
+
+    # --- Методы сохранения артефактов (скриншоты) ---
+
+    @allure.step("Сохранить скриншот: {name}_{device_label}.png")
+    def take_screenshot(self, name: str, device_label: str) -> str:
+        screenshots_dir = Path("screenshots")
+        screenshots_dir.mkdir(exist_ok=True)
+
+        filename = f"{name}_{device_label}.png"
+        path = screenshots_dir / filename
+
+        self.page.screenshot(path=str(path), full_page=False)
+
+        allure.attach.file(
+            str(path),
+            name=filename,
+            attachment_type=allure.attachment_type.PNG
+        )
+
+        return str(path)
+
+    @allure.step("Проверить, что файл скриншота сохранён и не пуст")
+    def verify_screenshot_saved(self, path: str):
+        p = Path(path)
+        assert p.exists(), f"Файл скриншота не создан: {path}"
+        assert p.stat().st_size > 0, f"Файл скриншота пуст (0 байт): {path}"
+
+    # --- Методы проверки контраста (WCAG 2.1) ---
+
+    @allure.step("Измерить контраст текст/фон для {selector}")
+    def get_contrast_ratio(self, selector: str) -> float:
+        result = self.page.evaluate(_GET_ELEMENT_COLORS_JS, selector)
+        assert result is not None, f"Элемент не найден в DOM: {selector}"
+        fg = _parse_rgb(result["color"])
+        bg = _parse_rgb(result["bgColor"])
+        ratio = _contrast_ratio(fg, bg)
+        allure.attach(
+            f"selector: {selector}\n"
+            f"color:     {result['color']}\n"
+            f"bgColor:   {result['bgColor']}\n"
+            f"ratio:     {ratio}:1",
+            name="contrast_detail",
+            attachment_type=allure.attachment_type.TEXT
+        )
+        return ratio
+
+    @allure.step("Проверить WCAG 2.1 AA контраст: {label} ≥ {min_ratio}:1")
+    def verify_wcag_contrast(self, selector: str, label: str,
+                             min_ratio: float = 4.5):
+        ratio = self.get_contrast_ratio(selector)
+        assert ratio >= min_ratio, (
+            f"[WCAG AA FAIL] {label}: контраст {ratio}:1 < требуемых {min_ratio}:1\n"
+            f"selector: {selector}"
+        )
+
+    def go_to_previous_page(self):
+        self.page.go_back(wait_until="load")
+
+    @allure.step(
+        "Проверить отсутствие мертвых зон"
+    )
+    def verify_no_dead_zones(self):
+
+        interactive_elements = self.page.locator(
+            """
+            button,
+            a,
+            input,
+            select,
+            textarea,
+            [role='button']
+            """
+        )
+
+        count = interactive_elements.count()
+
+        for i in range(count):
+            element = interactive_elements.nth(i)
+
+            # видим
+            assert element.is_visible(), (
+                f"Элемент #{i} невидим"
+            )
+
+            # активен
+            assert element.is_enabled(), (
+                f"Элемент #{i} неактивен"
+            )
+
+            # имеет размер
+            box = element.bounding_box()
+
+            assert box is not None
+
+            assert box["width"] > 0, (
+                f"Элемент #{i} width=0"
+            )
+
+            assert box["height"] > 0, (
+                f"Элемент #{i} height=0"
+            )
+
+            # находится в зоне видимости
+            in_viewport = element.evaluate("""
+            el => {
+                const rect = el.getBoundingClientRect()
+
+                return (
+                    rect.top >= 0 &&
+                    rect.left >= 0 &&
+                    rect.bottom <=
+                    window.innerHeight &&
+                    rect.right <=
+                    window.innerWidth
+                )
+            }
+            """)
+
+            assert in_viewport, (
+                f"Элемент #{i} вне viewport"
+            )

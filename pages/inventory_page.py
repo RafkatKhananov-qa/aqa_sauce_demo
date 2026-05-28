@@ -108,9 +108,12 @@ class InventoryPage(BasePage):
         price = self.get_item_price(item_name)
         assert price.startswith("$"), f"Цена не начинается с $: {price}"
 
-    # @allure.step("Проверить, что цена товара начинается со знака $")
-    # def verify_inventory_item_price_starts_from_dollar(self):
-    #     assert self.inventory_item_price.startswith("$")
+    @allure.step("Проверить, что все цены отображаются со знаком $")
+    def verify_all_prices_have_dollar_sign(self):
+        prices = self.get_inventory_item_prices()
+        for price in prices:
+            assert price.startswith("$"), \
+                f"Цена '{price}' не начинается со знака $"
 
     @allure.step("Кликнуть кнопку 'Add to cart' для товара Sauce Labs Backpack")
     def click_add_to_cart_button(self):
@@ -224,6 +227,23 @@ class InventoryPage(BasePage):
     def get_first_image_srcset(self):
         return self.img.first.get_attribute("srcset")
 
+    @allure.step("Проверить мобильный layout инвентаря: карточки вписываются в контейнер и viewport")
+    def verify_mobile_inventory_layout(self):
+        viewport_width = self.page.evaluate("() => window.innerWidth")
+        results = self.inventory_item.evaluate_all("""
+            items => items.map(item => ({
+                name: item.querySelector('.inventory_item_name')?.textContent ?? '',
+                fitsContainer: item.scrollWidth <= item.clientWidth,
+                width: item.getBoundingClientRect().width
+            }))
+        """)
+        for item in results:
+            assert item["fitsContainer"], \
+                f"Карточка '{item['name']}' вызывает overflow в контейнере"
+            assert item["width"] >= viewport_width * 0.7, \
+                (f"Карточка '{item['name']}' слишком узкая ({item['width']:.0f}px) "
+                 f"для мобильного viewport ({viewport_width}px) — layout не мобильный")
+
     @allure.step("Проверить, что двойной тап не вызывает зум страницы")
     def verify_double_tap_does_not_zoom(self):
         scale_before = self.page.evaluate(
@@ -238,3 +258,20 @@ class InventoryPage(BasePage):
         )
 
         assert scale_before == scale_after
+
+    @allure.step("Проверить контраст элементов страницы")
+    def verify_all_wcag_contrast(self):
+
+        elements = [
+            (".app_logo", "логотип Swag Labs (хедер)"),
+            ("[data-test='title']", "заголовок Products"),
+            (".inventory_item_name", "название товара"),
+            (".inventory_item_price", "цена товара"),
+            (".btn_inventory", "кнопка Add to cart")
+        ]
+
+        for locator, description in elements:
+            self.verify_wcag_contrast(
+                locator,
+                description
+            )

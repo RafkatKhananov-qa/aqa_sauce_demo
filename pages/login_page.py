@@ -36,6 +36,10 @@ class LoginPage(BasePage):
     def verify_username_input_type(self):
         expect(self.username_input).to_have_attribute("type", "text")
 
+    @allure.step("Проверить, что поле 'Имя пользователя' имеет placeholder=Username")
+    def verify_username_input_placeholder(self):
+        expect(self.username_input).to_have_attribute("placeholder", "Username")
+
     @allure.step("Ввести пароль")
     def fill_password(self, password, use_tap=False):
         if use_tap:
@@ -49,6 +53,10 @@ class LoginPage(BasePage):
     @allure.step("Проверить, что поле 'Пароль' имеет type = password")
     def verify_password_input_type(self):
         expect(self.password_input).to_have_attribute("type", "password")
+
+    @allure.step("Проверить, что поле 'Пароль' имеет placeholder=Password")
+    def verify_password_input_placeholder(self):
+        expect(self.password_input).to_have_attribute("placeholder", "Password")
 
     @allure.step("Кликнуть кнопку логина")
     def click_login(self):
@@ -90,7 +98,7 @@ class LoginPage(BasePage):
 
     @allure.step("Проверить, что сообщение об ошибке имеет текст и цвет")
     def verify_error_message(self, expected_text):
-        expect(self.error_message).to_be_visible()
+        expect(self.error_message).to_be_visible(timeout=3000)
         expect(self.error_message).to_have_text(expected_text)
         expect(self.error_message_container_error).to_have_css(
             *ERROR_BACKGROUND_CSS
@@ -101,3 +109,35 @@ class LoginPage(BasePage):
         expect(self.username_input).to_be_visible(timeout=CRITICAL_CONTENT_TIMEOUT)
         expect(self.password_input).to_be_visible(timeout=CRITICAL_CONTENT_TIMEOUT)
         expect(self.login_button).to_be_visible(timeout=CRITICAL_CONTENT_TIMEOUT)
+
+    @allure.step("Проверить, что элементы формы входа не скрыты анимацией")
+    def verify_login_form_elements_not_hidden_by_animation(self):
+        self.verify_element_not_hidden_by_animation(self.username_input)
+        self.verify_element_not_hidden_by_animation(self.password_input)
+        self.verify_element_not_hidden_by_animation(self.login_button)
+
+    @allure.step("Проверить навигацию через Tab")
+    def verify_keyboard_navigation(self):
+
+        expected_order = [
+            self.username_input,
+            self.password_input,
+            self.login_button
+        ]
+
+        for element in expected_order:
+            self.page.keyboard.press("Tab")
+            expect(element).to_be_focused()
+
+    @allure.step("Проверить контраст элементов страницы")
+    def verify_all_wcag_contrast(self):
+        elements = [
+            ("#login-button", "кнопка Login (текст на зелёном фоне)"),
+            (".login_logo", "логотип Swag Labs (страница логина)"),
+        ]
+
+        for locator, description in elements:
+            self.verify_wcag_contrast(
+                locator,
+                description
+            )
