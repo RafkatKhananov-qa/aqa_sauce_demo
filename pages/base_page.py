@@ -35,7 +35,7 @@ _GET_ELEMENT_COLORS_JS = """
 def _parse_rgb(css: str) -> tuple:
     """'rgb(19, 35, 34)' или 'rgba(...)' → (r, g, b)."""
     nums = re.findall(r'[\d.]+', css)
-    return int(float(nums[0])), int(float(nums[1])), int(float(nums[2]))
+    return tuple(int(float(x)) for x in nums[:3])
 
 
 def _relative_luminance(r: int, g: int, b: int) -> float:
