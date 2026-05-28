@@ -1,0 +1,4 @@
+selector: #login-button
+color:     rgb(19, 35, 34)
+bgColor:   rgb(61, 220, 145)
+ratio:     9.17:1
