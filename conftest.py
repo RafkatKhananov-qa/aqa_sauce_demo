@@ -3,14 +3,19 @@ from playwright.sync_api import sync_playwright
 
 from config.users import USER1_NAME, USER_PASSWORD
 from pages.login_page import LoginPage
+from utils.logger import get_logger
+
+logger = get_logger("conftest")
 
 
 @pytest.fixture
 def page():
     with sync_playwright() as drv:
         browser = drv.chromium.launch(headless=True)
+        logger.info("Запуск браузера, создание страницы")
         page = browser.new_page()
         yield page
+        logger.info("Закрытие страницы")
         browser.close()
 
 

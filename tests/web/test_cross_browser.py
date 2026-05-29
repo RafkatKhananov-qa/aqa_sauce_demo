@@ -9,7 +9,7 @@ from pages.login_page import LoginPage
 @pytest.fixture(params=[
     pytest.param(("chromium", (1920, 1080), True), id="chromium-headless"),
     pytest.param(("chromium", (1366, 768), True), id="chromium-desktop-headless"),
-    pytest.param(("chromium", (375, 667), True), id="chrome-mobile"),
+    pytest.param(("chromium", (375, 667), True), id="chromium-mobile"),
     pytest.param(("firefox", (375, 667), True), id="firefox-mobile-headless"),
     pytest.param(("firefox", (1920, 1080), True), id="firefox-desktop"),
     pytest.param(("webkit", (1366, 768), True), id="webkit-headless"),
