@@ -8,6 +8,9 @@ from config.users import (
     PASSWORD_REQUIRED_MESSAGE, SQL_INJECTION_LOGIN, XSS_LOGIN,
 )
 from pages.login_page import LoginPage
+from utils.logger import get_logger
+
+logger = get_logger("test_auth")
 
 
 @allure.feature("Login")
@@ -22,12 +25,15 @@ class TestLogin:
         (USER5_NAME, USER_PASSWORD)
     ])
     def test_auth_001_002(self, page, username, password):
+        logger.info(f"[test_auth_001_002] username={username}")
         login_page = LoginPage(page)
 
         login_page.open()
         login_page.verify_page_loaded()
         login_page.authorize(username, password)
         login_page.verify_login_success()
+
+        logger.info(f"[test_auth_001_002] PASS - {username} успешно авторизован")
 
     @allure.story("Login with invalid data")
     @allure.title("Пользователь не может войти с невалидными данными")
@@ -40,12 +46,15 @@ class TestLogin:
         (XSS_LOGIN, USER_PASSWORD, LOGIN_ERROR_MESSAGE),
     ])
     def test_auth_003_004_005_006_007_008(self, page, username, password, error_message):
+        logger.info(f"[test_auth_003_004_005_006_007_008] username={username!r}")
         login_page = LoginPage(page)
 
         login_page.open()
         login_page.verify_page_loaded()
         login_page.authorize(username, password)
         login_page.verify_error_message(error_message)
+
+        logger.info(f"[test_auth_003_004_005_006_007_008] PASS - {username} не смог авторизоваться")
 
     @allure.story("Login after 5 unsuccessful login attempts with incorrect password")
     @allure.title("Пользователь может войти с валидными данными, если до этого "
@@ -54,6 +63,7 @@ class TestLogin:
         (USER1_NAME, USER_WRONG_PASSWORD, LOGIN_ERROR_MESSAGE),
     ])
     def test_auth_009(self, page, username, password, error_message):
+        logger.info(f"[test_auth_009] username={username}")
         login_page = LoginPage(page)
 
         login_page.open()
@@ -66,6 +76,8 @@ class TestLogin:
         login_page.authorize(USER1_NAME, USER_PASSWORD)
         login_page.verify_login_success()
 
+        logger.info(f"[test_auth_009] PASS - {username} успешно авторизован")
+
     @allure.story("User remains authorized after page reload")
     @allure.title("Пользователь остаётся авторизованным "
                   "после перезагрузки страницы")
@@ -73,6 +85,7 @@ class TestLogin:
         (USER1_NAME, USER_PASSWORD)
     ])
     def test_auth_010(self, page, username, password):
+        logger.info(f"[test_auth_010] username={username}")
         login_page = LoginPage(page)
 
         login_page.open()
@@ -83,3 +96,5 @@ class TestLogin:
         page.reload()
 
         login_page.verify_login_success()
+
+        logger.info(f"[test_auth_010] PASS - {username} остался авторизован")
