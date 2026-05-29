@@ -1,0 +1,8 @@
+INFO     conftest:conftest.py:15 Запуск браузера, создание страницы
+INFO     base_page:base_page.py:73 Переход на https://www.saucedemo.com/
+INFO     login_page:login_page.py:35 Ввод имени пользователя standard_user
+INFO     login_page:login_page.py:60 Ввод пароля secret_sauce
+INFO     login_page:login_page.py:80 Клик по кнопке логина
+INFO     checkout_step_one_page:checkout_step_one_page.py:24 Заполнение формы checkout: Ivan Ivanov, sddgfdg
+INFO     checkout_step_one_page:checkout_step_one_page.py:64 Клик по кнопке Continue
+INFO     conftest:conftest.py:18 Закрытие страницы
