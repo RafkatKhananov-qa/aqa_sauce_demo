@@ -1,0 +1,13 @@
+INFO     conftest:conftest.py:15 Запуск браузера, создание страницы
+INFO     test_auth:test_auth.py:49 [test_auth_003_004_005_006_007_008] username='standard_user'
+INFO     base_page:base_page.py:73 Переход на https://www.saucedemo.com/
+INFO     login_page:login_page.py:26 Проверка, что страница имеет url https://www.saucedemo.com
+INFO     login_page:login_page.py:95 Авторизация пользователя standard_user
+INFO     login_page:login_page.py:35 Ввод имени пользователя standard_user
+INFO     login_page:login_page.py:41 Проверка, что имя пользователя введено в поле
+INFO     login_page:login_page.py:60 Ввод пароля 
+INFO     login_page:login_page.py:65 Проверка, что пароль введён в поле
+INFO     login_page:login_page.py:80 Клик по кнопке логина
+INFO     login_page:login_page.py:129 Проверка, что сообщение об ошибке имеет текст и цвет
+INFO     test_auth:test_auth.py:57 [test_auth_003_004_005_006_007_008] PASS - standard_user не смог авторизоваться
+INFO     conftest:conftest.py:18 Закрытие страницы
