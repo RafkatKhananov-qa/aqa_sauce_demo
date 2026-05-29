@@ -24,7 +24,7 @@ class TestLogin:
         (USER4_NAME, USER_PASSWORD),
         (USER5_NAME, USER_PASSWORD)
     ])
-    def test_auth_001_002(self, page, username, password):
+    def test_auth_001(self, page, username, password):
         logger.info(f"[test_auth_001_002] username={username}")
         login_page = LoginPage(page)
 
@@ -45,7 +45,7 @@ class TestLogin:
         (SQL_INJECTION_LOGIN, USER_PASSWORD, LOGIN_ERROR_MESSAGE),
         (XSS_LOGIN, USER_PASSWORD, LOGIN_ERROR_MESSAGE),
     ])
-    def test_auth_003_004_005_006_007_008(self, page, username, password, error_message):
+    def test_auth_002(self, page, username, password, error_message):
         logger.info(f"[test_auth_003_004_005_006_007_008] username={username!r}")
         login_page = LoginPage(page)
 
@@ -62,7 +62,7 @@ class TestLogin:
     @pytest.mark.parametrize("username, password, error_message", [
         (USER1_NAME, USER_WRONG_PASSWORD, LOGIN_ERROR_MESSAGE),
     ])
-    def test_auth_009(self, page, username, password, error_message):
+    def test_auth_003(self, page, username, password, error_message):
         logger.info(f"[test_auth_009] username={username}")
         login_page = LoginPage(page)
 
@@ -84,7 +84,7 @@ class TestLogin:
     @pytest.mark.parametrize("username, password", [
         (USER1_NAME, USER_PASSWORD)
     ])
-    def test_auth_010(self, page, username, password):
+    def test_auth_004(self, page, username, password):
         logger.info(f"[test_auth_010] username={username}")
         login_page = LoginPage(page)
 

@@ -30,7 +30,7 @@ class TestCrossDevice:
                                   (IPAD_MINI_WIDTH, IPAD_MINI_HEIGHT))
                              ],
                              indirect=["mobile_page"])
-    def test_xdev_001_002_003(self, mobile_page, expected_size):
+    def test_xdev_001(self, mobile_page, expected_size):
         login_page = LoginPage(mobile_page)
         login_page.open()
         login_page.verify_page_loaded()
@@ -102,7 +102,7 @@ class TestCrossDevice:
                                  ({"device": "iPad Mini", "browser": "webkit", "device_scale_factor": 3}, 3),
                              ],
                              indirect=["mobile_page"])
-    def test_xdev_005(self, mobile_page, expected_dpr):
+    def test_xdev_002(self, mobile_page, expected_dpr):
         login_page = LoginPage(mobile_page)
         login_page.open()
         login_page.verify_page_loaded()
@@ -175,7 +175,7 @@ class TestCrossDevice:
                                   "locale": "ru-RU", "timezone_id": "Europe/Moscow"}
                              ],
                              indirect=True)
-    def test_xdev_006(self, mobile_page):
+    def test_xdev_003(self, mobile_page):
         login_page = LoginPage(mobile_page)
         login_page.open()
         login_page.verify_page_loaded()
@@ -200,7 +200,7 @@ class TestCrossDevice:
                                   "reduced_motion": True},
                              ],
                              indirect=True)
-    def test_xdev_007(self, mobile_page):
+    def test_xdev_004(self, mobile_page):
         login_page = LoginPage(mobile_page)
         login_page.open()
         login_page.verify_page_loaded()
@@ -233,7 +233,7 @@ class TestCrossDevice:
                                  {"device": "Pixel 7", "browser": "chromium"},
                              ],
                              indirect=True)
-    def test_xdev_008(self, mobile_page):
+    def test_xdev_005(self, mobile_page):
         login_page = LoginPage(mobile_page)
         login_page.open_and_verify_request_user_agent_is_mobile()
         login_page.verify_page_loaded()
@@ -259,7 +259,7 @@ class TestCrossDevice:
                                  {"device": "iPad Mini", "browser": "webkit"},
                              ],
                              indirect=True)
-    def test_xdev_009(self, mobile_page, worker_id):
+    def test_xdev_006(self, mobile_page, worker_id):
         allure.dynamic.parameter("worker", worker_id)
 
         login_page = LoginPage(mobile_page)
@@ -301,7 +301,7 @@ class TestCrossDevice:
                                  ({"device": "iPad Mini", "browser": "webkit"}, "iPadMini"),
                              ],
                              indirect=["mobile_page"])
-    def test_xdev_010(self, mobile_page, device_label):
+    def test_xdev_007(self, mobile_page, device_label):
         login_page = LoginPage(mobile_page)
         login_page.open()
         login_page.verify_page_loaded()

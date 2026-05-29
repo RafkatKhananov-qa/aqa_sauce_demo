@@ -54,7 +54,7 @@ class TestCart:
 
     @allure.story("Cart item details")
     @allure.title("Товар, добавленный через детальную страницу, отображается в корзине корректно")
-    def test_cart_006(self, page):
+    def test_cart_005(self, page):
         login_page = LoginPage(page)
         login_page.login_and_verify(USER1_NAME, USER_PASSWORD)
 
@@ -63,7 +63,7 @@ class TestCart:
 
     @allure.story("Navigation from cart")
     @allure.title("Кнопка Continue Shopping возвращает пользователя на страницу товаров")
-    def test_cart_007(self, page):
+    def test_cart_006(self, page):
         login_page = LoginPage(page)
         login_page.login_and_verify(USER1_NAME, USER_PASSWORD)
 
@@ -74,7 +74,7 @@ class TestCart:
 
     @allure.story("Cart state")
     @allure.title("Корзина пуста при открытии без добавления товаров")
-    def test_cart_008(self, page):
+    def test_cart_007(self, page):
         login_page = LoginPage(page)
         login_page.login_and_verify(USER1_NAME, USER_PASSWORD)
 
@@ -87,7 +87,7 @@ class TestCart:
 
     @allure.story("Cart persistence")
     @allure.title("Содержимое корзины сохраняется после перезагрузки страницы")
-    def test_cart_009(self, page):
+    def test_cart_008(self, page):
         login_page = LoginPage(page)
         login_page.login_and_verify(USER1_NAME, USER_PASSWORD)
 
@@ -100,7 +100,7 @@ class TestCart:
 
     @allure.story("Cart persistence")
     @allure.title("Корзина не изолирована между пользователями на одном устройстве")
-    def test_cart_010(self, page):
+    def test_cart_009(self, page):
         login_page = LoginPage(page)
         login_page.login_and_verify(USER1_NAME, USER_PASSWORD)
 

@@ -32,7 +32,7 @@ class TestMobileUX:
                                  {"device": "iPhone 14 Pro", "browser": "webkit"},
                              ],
                              indirect=True)
-    def test_ux_002_006(self, mobile_page):
+    def test_ux_002(self, mobile_page):
         login_page = LoginPage(mobile_page)
         login_page.open()
         login_page.click_login()
@@ -49,7 +49,7 @@ class TestMobileUX:
                                  {"device": "Pixel 7", "browser": "chromium"},
                              ],
                              indirect=True)
-    def test_ux_004(self, mobile_page):
+    def test_ux_003(self, mobile_page):
         login_page = LoginPage(mobile_page)
         login_page.open()
         login_page.verify_page_loaded()
@@ -70,7 +70,7 @@ class TestMobileUX:
                                  {"device": "iPhone 14 Pro", "browser": "webkit"},
                              ],
                              indirect=True)
-    def test_ux_005(self, mobile_page):
+    def test_ux_004(self, mobile_page):
         login_page = LoginPage(mobile_page)
         login_page.open()
         login_page.verify_keyboard_navigation()
@@ -82,7 +82,7 @@ class TestMobileUX:
                                  {"device": "iPhone 14 Pro", "browser": "webkit"},
                              ],
                              indirect=True)
-    def test_ux_008(self, mobile_page):
+    def test_ux_005(self, mobile_page):
         login_page = LoginPage(mobile_page)
         login_page.open()
         login_page.verify_page_loaded()
@@ -105,7 +105,7 @@ class TestMobileUX:
                                  {"device": "iPhone 14 Pro", "browser": "webkit"},
                              ],
                              indirect=True)
-    def test_ux_009(self, mobile_page):
+    def test_ux_006(self, mobile_page):
         login_page = LoginPage(mobile_page)
         login_page.login_and_verify(USER1_NAME, USER_PASSWORD)
 
@@ -123,7 +123,7 @@ class TestMobileUX:
                                  {"device": "iPhone 14 Pro", "browser": "webkit"},
                              ],
                              indirect=True)
-    def test_ux_010(self, mobile_page):
+    def test_ux_007(self, mobile_page):
         inventory_page = InventoryPage(mobile_page)
 
         inventory_page.open()

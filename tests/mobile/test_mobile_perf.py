@@ -172,7 +172,7 @@ class TestMobilePerformance:
                                  {"device": "Pixel 7", "browser": "chromium"},
                              ],
                              indirect=True)
-    def test_perf_007(self, logged_in_mobile_page):
+    def test_perf_006(self, logged_in_mobile_page):
         inventory_page = InventoryPage(logged_in_mobile_page)
         inventory_page.open(INVENTORY_URL)
         inventory_page.wait_until_page_fully_loaded()
@@ -202,7 +202,7 @@ class TestMobilePerformance:
                                  {"device": "Pixel 7", "browser": "chromium"},
                              ],
                              indirect=True)
-    def test_perf_008(self, mobile_page):
+    def test_perf_007(self, mobile_page):
         login_page = LoginPage(mobile_page)
 
         login_page.open()
@@ -228,7 +228,7 @@ class TestMobilePerformance:
         ],
         indirect=True
     )
-    def test_perf_009(self, mobile_page):
+    def test_perf_008(self, mobile_page):
 
         login_page = LoginPage(mobile_page)
 
@@ -253,7 +253,7 @@ class TestMobilePerformance:
         ],
         indirect=True
     )
-    def test_perf_010(self, mobile_page):
+    def test_perf_009(self, mobile_page):
 
         login_page = LoginPage(mobile_page)
 

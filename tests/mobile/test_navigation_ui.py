@@ -8,7 +8,7 @@ from pages.inventory_page import InventoryPage
 class TestNavigation:
     @allure.story("Burger menu links are clickable and sidebar can be closed")
     @allure.title("Все ссылки в бургер-меню кликабельны, меню закрывается")
-    def test_ui_002(self, logged_in_page):
+    def test_ui_001(self, logged_in_page):
         inventory_page = InventoryPage(logged_in_page)
         inventory_page.click_burger_menu_button()
         inventory_page.verify_sidebar_links_are_clickable()
@@ -22,7 +22,7 @@ class TestNavigation:
         pytest.param({"width": 375, "height": 812}, id="mobile"),
         pytest.param(None, id="desktop"),
     ])
-    def test_ui_003_006(self, logged_in_page, viewport):
+    def test_ui_002(self, logged_in_page, viewport):
         if viewport:
             logged_in_page.set_viewport_size(viewport)
         inventory_page = InventoryPage(logged_in_page)

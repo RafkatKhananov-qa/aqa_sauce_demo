@@ -15,7 +15,7 @@ class TestMobileTouch:
                                  {"device": "Pixel 7", "browser": "chromium"}
                              ],
                              indirect=True)
-    def test_touch_02(self, mobile_page):
+    def test_touch_01(self, mobile_page):
         login_page = LoginPage(mobile_page)
         login_page.login_and_verify(USER1_NAME, USER_PASSWORD)
         inventory_page = InventoryPage(mobile_page)
@@ -29,7 +29,7 @@ class TestMobileTouch:
                                  {"device": "Pixel 7", "browser": "chromium"}
                              ],
                              indirect=True)
-    def test_touch_04(self, mobile_page):
+    def test_touch_02(self, mobile_page):
         login_page = LoginPage(mobile_page)
         login_page.login_and_verify(USER1_NAME, USER_PASSWORD)
         inventory_page = InventoryPage(mobile_page)
@@ -42,7 +42,7 @@ class TestMobileTouch:
                                  {"device": "Pixel 7", "browser": "chromium"}
                              ],
                              indirect=True)
-    def test_touch_06(self, mobile_page):
+    def test_touch_03(self, mobile_page):
         login_page = LoginPage(mobile_page)
         login_page.login_and_verify(USER1_NAME, USER_PASSWORD)
         inventory_page = InventoryPage(mobile_page)
@@ -55,7 +55,7 @@ class TestMobileTouch:
                                  {"device": "Pixel 7", "browser": "chromium"}
                              ],
                              indirect=True)
-    def test_touch_08(self, mobile_page):
+    def test_touch_04(self, mobile_page):
         login_page = LoginPage(mobile_page)
         login_page.login_and_verify(USER1_NAME, USER_PASSWORD)
         inventory_page = InventoryPage(mobile_page)
@@ -69,7 +69,7 @@ class TestMobileTouch:
                                  {"device": "Pixel 7", "browser": "chromium"}
                              ],
                              indirect=True)
-    def test_touch_09(self, mobile_page):
+    def test_touch_05(self, mobile_page):
         login_page = LoginPage(mobile_page)
         login_page.login_and_verify(USER1_NAME, USER_PASSWORD)
         inventory_page = InventoryPage(mobile_page)
