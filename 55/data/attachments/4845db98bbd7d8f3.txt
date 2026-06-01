@@ -1,0 +1,4 @@
+selector: .login_logo
+color:     rgb(19, 35, 34)
+bgColor:   rgb(238, 252, 246)
+ratio:     15.4:1
