@@ -1,0 +1,36 @@
+INFO     conftest:conftest.py:15 Запуск браузера, создание страницы
+INFO     base_page:base_page.py:73 Переход на https://www.saucedemo.com/
+INFO     TC_SAUCE_001:test_e2e.py:33 Открыли страницу логина
+INFO     login_page:login_page.py:26 Проверка, что страница имеет url https://www.saucedemo.com
+INFO     TC_SAUCE_001:test_e2e.py:37 Страница логина успешно загружена
+INFO     login_page:login_page.py:35 Ввод имени пользователя standard_user
+INFO     login_page:login_page.py:41 Проверка, что имя пользователя введено в поле
+INFO     TC_SAUCE_001:test_e2e.py:42 Ввели логин: standard_user
+INFO     login_page:login_page.py:60 Ввод пароля secret_sauce
+INFO     login_page:login_page.py:65 Проверка, что пароль введён в поле
+INFO     TC_SAUCE_001:test_e2e.py:47 Ввели пароль
+INFO     login_page:login_page.py:80 Клик по кнопке логина
+INFO     login_page:login_page.py:90 Проверка, что страница имеет путь /inventory.html
+INFO     TC_SAUCE_001:test_e2e.py:52 Успешно авторизовались
+INFO     inventory_page:inventory_page.py:108 Проверка, что название товара Sauce Labs Backpack видимо
+INFO     TC_SAUCE_001:test_e2e.py:57 Товар Sauce Labs Backpack отображается
+INFO     inventory_page:inventory_page.py:113 Получение цены товара по названию товара
+INFO     TC_SAUCE_001:test_e2e.py:62 Цена товара сохранена: $29.99
+INFO     TC_SAUCE_001:test_e2e.py:67 Товар добавлен в корзину
+INFO     inventory_page:inventory_page.py:182 Проверить, что страница имеет путь /cart.html
+INFO     TC_SAUCE_001:test_e2e.py:72 Открыли корзину
+INFO     TC_SAUCE_001:test_e2e.py:80 Проверили товар в корзине
+INFO     cart_page:cart_page.py:72 Клик по кнопке Checkout
+INFO     TC_SAUCE_001:test_e2e.py:85 Открыли Checkout Step One
+INFO     TC_SAUCE_001:test_e2e.py:97 Заполнили данные покупателя
+INFO     checkout_step_one_page:checkout_step_one_page.py:64 Клик по кнопке Continue
+INFO     TC_SAUCE_001:test_e2e.py:102 Открыли Checkout Step Two
+INFO     checkout_step_two_page:checkout_step_two_page.py:92 Проверка итоговой суммы: товары 29.99 + налог 2.4 = 32.39, фактически 32.39
+INFO     TC_SAUCE_001:test_e2e.py:114 Проверили итоговую информацию заказа
+INFO     checkout_step_two_page:checkout_step_two_page.py:101 Клик по кнопке Finish
+INFO     TC_SAUCE_001:test_e2e.py:119 Нажали Finish
+INFO     TC_SAUCE_001:test_e2e.py:127 Проверили страницу успешного завершения
+INFO     TC_SAUCE_001:test_e2e.py:131 Сохранили финальный скриншот
+INFO     checkout_complete_page:checkout_complete_page.py:50 Клик по кнопке Back Home
+INFO     TC_SAUCE_001:test_e2e.py:136 Вернулись на страницу товаров
+INFO     conftest:conftest.py:18 Закрытие страницы

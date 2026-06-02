@@ -1,0 +1,13 @@
+INFO     conftest:conftest.py:15 Запуск браузера, создание страницы
+INFO     test_auth:test_auth.py:28 [test_auth_001_002] username=performance_glitch_user
+INFO     base_page:base_page.py:73 Переход на https://www.saucedemo.com/
+INFO     login_page:login_page.py:26 Проверка, что страница имеет url https://www.saucedemo.com
+INFO     login_page:login_page.py:95 Авторизация пользователя performance_glitch_user
+INFO     login_page:login_page.py:35 Ввод имени пользователя performance_glitch_user
+INFO     login_page:login_page.py:41 Проверка, что имя пользователя введено в поле
+INFO     login_page:login_page.py:60 Ввод пароля secret_sauce
+INFO     login_page:login_page.py:65 Проверка, что пароль введён в поле
+INFO     login_page:login_page.py:80 Клик по кнопке логина
+INFO     login_page:login_page.py:90 Проверка, что страница имеет путь /inventory.html
+INFO     test_auth:test_auth.py:36 [test_auth_001_002] PASS - performance_glitch_user успешно авторизован
+INFO     conftest:conftest.py:18 Закрытие страницы
