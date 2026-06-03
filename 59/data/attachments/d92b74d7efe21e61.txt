@@ -1,0 +1,3 @@
+INFO     performance_mixin:performance_mixin.py:13 Эмуляция 3G сети (download=375KB/s, upload=750KB/s, latency=100ms)
+INFO     base_page:base_page.py:29 Переход на https://www.saucedemo.com/
+INFO     login_page:login_page.py:138 Проверка, что поле ввода логина, пароля, и кнопка логина видны на странице
