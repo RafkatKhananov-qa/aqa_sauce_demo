@@ -250,7 +250,8 @@ class TestCrossDevice:
         inventory_page.verify_mobile_inventory_layout()
 
     @allure.story("Изоляция контекстов")
-    @allure.title("Параллельный запуск на 3 устройствах: сессии изолированы, тесты не влияют друг на друга")
+    @allure.title("Параллельный запуск на 3 устройствах: сессии изолированы, тесты "
+                  "не влияют друг на друга")
     @pytest.mark.parallel
     @pytest.mark.parametrize("mobile_page",
                              [

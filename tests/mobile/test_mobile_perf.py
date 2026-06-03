@@ -34,7 +34,8 @@ class TestMobilePerformance:
         mobile_page.wait_for_load_state("load")
         load_time = time.perf_counter() - start_time
 
-        assert critical_time < 18, f"Критический контент виден за {critical_time:.2f} сек, лимит 18 сек"
+        assert critical_time < 18, (f"Критический контент виден за {critical_time:.2f} сек, "
+                                    f"лимит 18 сек")
         assert load_time < 19, f"load событие произошло за {load_time:.2f} сек, лимит 19 сек"
 
     @allure.story("Производительность на мобильных сетях")

@@ -8,6 +8,9 @@ from pages.inventory_page import InventoryPage
 from pages.login_page import LoginPage
 
 
+MULTIPLE_TAPS_COUNT = 5
+
+
 @allure.feature("Cart")
 class TestCart:
 
@@ -38,7 +41,7 @@ class TestCart:
         login_page.login_and_verify(USER1_NAME, USER_PASSWORD)
 
         inventory_page = InventoryPage(page)
-        inventory_page.click_add_to_cart_button_count_times(5)
+        inventory_page.click_add_to_cart_button_count_times(MULTIPLE_TAPS_COUNT)
         inventory_page.verify_items_count_in_bucket("1")
 
     @allure.story("Removing items from cart")
