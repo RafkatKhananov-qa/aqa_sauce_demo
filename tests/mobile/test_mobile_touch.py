@@ -5,6 +5,8 @@ from config.users import USER1_NAME, USER_PASSWORD
 from pages.inventory_page import InventoryPage
 from pages.login_page import LoginPage
 
+MULTIPLE_TAPS_COUNT = 3
+
 
 @allure.feature("Touch")
 class TestMobileTouch:
@@ -73,5 +75,5 @@ class TestMobileTouch:
         login_page = LoginPage(mobile_page)
         login_page.login_and_verify(USER1_NAME, USER_PASSWORD)
         inventory_page = InventoryPage(mobile_page)
-        inventory_page.click_add_to_cart_button_count_times(3)
+        inventory_page.click_add_to_cart_button_count_times(MULTIPLE_TAPS_COUNT)
         inventory_page.verify_items_count_in_bucket("1")

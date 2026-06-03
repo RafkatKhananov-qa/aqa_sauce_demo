@@ -2,6 +2,7 @@ import allure
 import pytest
 
 from config.base import CHECKOUT_STEP_ONE_URL, INVENTORY_ITEM_NAME
+from config.users import CHECKOUT_FIRST_NAME, CHECKOUT_LAST_NAME, CHECKOUT_ZIP
 
 from pages.cart_page import CartPage
 from pages.checkout.checkout_step_one_page import CheckoutStepOnePage
@@ -45,7 +46,7 @@ class TestCheckout:
     def test_check_002(self, logged_in_page):
         logged_in_page.goto(CHECKOUT_STEP_ONE_URL)
         checkout_step_one_page = CheckoutStepOnePage(logged_in_page)
-        checkout_step_one_page.fill_form("Ivan", "Ivanov", "sddgfdg")
+        checkout_step_one_page.fill_form(CHECKOUT_FIRST_NAME, CHECKOUT_LAST_NAME, CHECKOUT_ZIP)
         checkout_step_one_page.click_continue_button()
         checkout_step_one_page.verify_checkout_step_two()
 
@@ -55,7 +56,7 @@ class TestCheckout:
     def test_check_003(self, logged_in_page):
         logged_in_page.goto(CHECKOUT_STEP_ONE_URL)
         checkout_step_one_page = CheckoutStepOnePage(logged_in_page)
-        checkout_step_one_page.fill_form("Ivan", "Ivanov", "435468")
+        checkout_step_one_page.fill_form(CHECKOUT_FIRST_NAME, CHECKOUT_LAST_NAME, CHECKOUT_ZIP)
         checkout_step_one_page.click_cancel_button()
         checkout_step_one_page.verify_cart_page()
 
@@ -65,7 +66,7 @@ class TestCheckout:
     def test_check_004(self, logged_in_page):
         logged_in_page.goto(CHECKOUT_STEP_ONE_URL)
         checkout_step_one_page = CheckoutStepOnePage(logged_in_page)
-        checkout_step_one_page.fill_form("Ivan", "Ivanov", "435468")
+        checkout_step_one_page.fill_form(CHECKOUT_FIRST_NAME, CHECKOUT_LAST_NAME, CHECKOUT_ZIP)
         checkout_step_one_page.click_cancel_button()
         checkout_step_one_page.verify_cart_page()
         cart_page = CartPage(logged_in_page)
@@ -84,7 +85,7 @@ class TestCheckout:
         cart_page.verify_inventory_item_name(INVENTORY_ITEM_NAME)
         cart_page.click_checkout_button()
         checkout_step_one_page = CheckoutStepOnePage(logged_in_page)
-        checkout_step_one_page.fill_form("Ivan", "Ivanov", "435468")
+        checkout_step_one_page.fill_form(CHECKOUT_FIRST_NAME, CHECKOUT_LAST_NAME, CHECKOUT_ZIP)
         checkout_step_one_page.click_continue_button()
 
         checkout_step_two_page = CheckoutStepTwoPage(logged_in_page)
@@ -105,7 +106,7 @@ class TestCheckout:
         cart_page.verify_checkout_step_one()
 
         checkout_step_one_page = CheckoutStepOnePage(logged_in_page)
-        checkout_step_one_page.fill_form("Ivanov", "Ivanov", "435468")
+        checkout_step_one_page.fill_form(CHECKOUT_FIRST_NAME, CHECKOUT_LAST_NAME, CHECKOUT_ZIP)
         checkout_step_one_page.click_continue_button()
         checkout_step_one_page.verify_checkout_step_two()
 
