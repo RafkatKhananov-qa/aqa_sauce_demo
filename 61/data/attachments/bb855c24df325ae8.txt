@@ -1,0 +1,4 @@
+selector: .inventory_item_price
+color:     rgb(19, 35, 34)
+bgColor:   rgb(255, 255, 255)
+ratio:     16.26:1
