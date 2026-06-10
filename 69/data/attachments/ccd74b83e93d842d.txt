@@ -1,0 +1,8 @@
+INFO     conftest:conftest.py:15 Запуск браузера, создание страницы
+INFO     base_page:base_page.py:29 Переход на https://www.saucedemo.com/
+INFO     login_page:login_page.py:35 Ввод имени пользователя standard_user
+INFO     login_page:login_page.py:60 Ввод пароля secret_sauce
+INFO     login_page:login_page.py:80 Клик по кнопке логина
+INFO     base_page:base_page.py:29 Переход на https://www.saucedemo.com/inventory.html
+INFO     performance_mixin:performance_mixin.py:100 Время загрузки страницы: 65 мс
+INFO     conftest:conftest.py:18 Закрытие страницы

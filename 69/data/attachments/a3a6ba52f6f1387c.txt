@@ -1,0 +1,1 @@
+INFO     base_page:base_page.py:29 Переход на https://www.saucedemo.com/
