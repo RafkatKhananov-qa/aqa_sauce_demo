@@ -1,4 +1,0 @@
-INFO     base_page:base_page.py:73 Переход на https://www.saucedemo.com/
-INFO     login_page:login_page.py:26 Проверка, что страница имеет url https://www.saucedemo.com
-INFO     login_page:login_page.py:51 Проверка, что поле 'Имя пользователя' имеет placeholder=Username
-INFO     login_page:login_page.py:75 Проверка, что поле 'Пароль' имеет placeholder=Password

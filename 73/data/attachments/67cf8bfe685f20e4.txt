@@ -1,0 +1,2 @@
+INFO     base_page:base_page.py:29 Переход на https://www.saucedemo.com/
+INFO     accessibility_mixin:accessibility_mixin.py:97 Проверка мёртвых зон: найдено 3 интерактивных элементов
