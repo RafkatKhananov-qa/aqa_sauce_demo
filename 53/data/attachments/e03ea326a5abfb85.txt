@@ -1,3 +1,0 @@
-INFO     base_page:base_page.py:73 Переход на https://www.saucedemo.com/
-INFO     base_page:base_page.py:373 Ожидание полной загрузки страницы
-INFO     base_page:base_page.py:373 Ожидание полной загрузки страницы
