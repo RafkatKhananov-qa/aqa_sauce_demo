@@ -1,5 +1,0 @@
-INFO     base_page:base_page.py:73 Переход на https://www.saucedemo.com/
-INFO     login_page:login_page.py:35 Ввод имени пользователя standard_user
-INFO     login_page:login_page.py:60 Ввод пароля secret_sauce
-INFO     login_page:login_page.py:85 Клик по кнопке логина (tap)
-INFO     login_page:login_page.py:90 Проверка, что страница имеет путь /inventory.html
