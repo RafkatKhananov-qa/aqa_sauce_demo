@@ -1,0 +1,2 @@
+INFO     base_page:base_page.py:29 Переход на https://www.saucedemo.com/
+INFO     login_page:login_page.py:152 Проверка навигации через Tab

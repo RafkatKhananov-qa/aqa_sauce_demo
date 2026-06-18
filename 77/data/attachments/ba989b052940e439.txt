@@ -1,0 +1,6 @@
+INFO     base_page:base_page.py:29 Переход на https://www.saucedemo.com/
+INFO     login_page:login_page.py:80 Клик по кнопке логина
+INFO     login_page:login_page.py:129 Проверка, что сообщение об ошибке имеет текст и цвет
+INFO     login_page:login_page.py:32 Ввод имени пользователя standard_user через tap
+INFO     login_page:login_page.py:80 Клик по кнопке логина
+INFO     login_page:login_page.py:129 Проверка, что сообщение об ошибке имеет текст и цвет
