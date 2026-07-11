@@ -1,9 +1,0 @@
-INFO     conftest:conftest.py:15 Запуск браузера, создание страницы
-INFO     base_page:base_page.py:29 Переход на https://www.saucedemo.com/
-INFO     login_page:login_page.py:35 Ввод имени пользователя standard_user
-INFO     login_page:login_page.py:60 Ввод пароля secret_sauce
-INFO     login_page:login_page.py:119 Начало измерения времени авторизации
-INFO     login_page:login_page.py:80 Клик по кнопке логина
-INFO     login_page:login_page.py:90 Проверка, что страница имеет путь /inventory.html
-INFO     login_page:login_page.py:124 Авторизация выполнена успешно за 86.52 мс
-INFO     conftest:conftest.py:18 Закрытие страницы
